@@ -12,6 +12,7 @@ public class Spiel {
     private String datum;
     private int ergebnis;
     private long spielID;
+    private long test;
 
 //Konstruktor für die Tabelle Spiel
     public Spiel(String heim, String gast, int tore_gast, int tore_heim, String uhrzeit, String datum, int ergebnis, long spielID){
