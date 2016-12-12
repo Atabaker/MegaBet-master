@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">MegaBet</string>
+
+    <string-array name="entries_beendeteSpiele">
+        <item>Bielefeld - Paderborn</item>
+        <item>Schalke - Dortmund</item>
+        <item>Berlin - Bayern München</item>
+    </string-array>
+
+    <string-array name="entries_offeneSpiele">
+        <item>Hamburg - Bremen</item>
+        <item>Hannover - Braunschweig</item>
+        <item>Leverkusen - Köln</item>
+    </string-array>
+
+    <string-array name="entries_Wettereignisse">
+        <item>25.11.16 Hannover - Braunschweig</item>
+        <item>18.12.16 Leverkusen - Köln</item>
+        <item>28.12.16 RB Leipzig - FC Bayern</item>
+        <item>31.12.16 Hamburg - Bremen</item>
+    </string-array>
+
+    <string-array name="entries_MeineWetten">
+        <item>Bielefeld - Paderborn</item>
+        <item>Schalke - Dortmund</item>
+        <item>Berlin - Bayern München</item>
+    </string-array>
+
+    <string-array name="entries_ListViewUser">
+        <item>afoerster@fh-bielefeld.de</item>
+        <item>asediqi@fh-bielefeld.de</item>
+        <item>jkleemann@fh-bielefeld.de</item>
+        <item>sbrokmeier@fh-bielefeld.de</item>
+    </string-array>
+
+    <string name="alert_button_ok">OK</string>
+
+</resources>
