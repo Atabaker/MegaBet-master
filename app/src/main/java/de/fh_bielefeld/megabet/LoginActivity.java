@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                //TODO: Wenn Admin true, Admin-Screen öffnen
+
 
                 if(user.get(position).getAdmin() == "false") {
                     Intent intent = new Intent(context, UserActivity.class);
