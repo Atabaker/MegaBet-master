@@ -16,6 +16,10 @@ public class WetteAbgebenActivity extends AppCompatActivity {
 
     private TextView textViewUser;
     private TextView textViewTaler;
+    private TextView textViewDatum;
+    private TextView textViewUhrzeit;
+    private TextView textViewHeim;
+    private TextView textViewGast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +33,25 @@ public class WetteAbgebenActivity extends AppCompatActivity {
     private void loadData(){
         textViewUser = (TextView) findViewById(R.id.wette_textViewUsername);
         textViewTaler = (TextView) findViewById(R.id.wette_TextViewTaler);
+        textViewDatum = (TextView) findViewById(R.id.wette_textViewSpieldatum);
+        textViewUhrzeit = (TextView) findViewById(R.id.wette_textViewUhrzeit);
+        textViewHeim = (TextView) findViewById(R.id.wette_textViewHeimmannschaft);
+        textViewGast = (TextView) findViewById(R.id.wette_textViewGastmannschaft);
+
+        Intent intent = getIntent();
+        Bundle spielbundle = intent.getExtras();
+
+        String datum = spielbundle.getString(UserActivity.DATUM);
+        String uhrzeit = spielbundle.getString(UserActivity.UHRZEIT);
+        String heim = spielbundle.getString(UserActivity.HEIM);
+        String gast = spielbundle.getString(UserActivity.GAST);
+
         // findview for all views
 
+        textViewDatum.setText(datum);
+        textViewUhrzeit.setText(uhrzeit);
+        textViewHeim.setText(heim);
+        textViewGast.setText(gast);
 
 
         textViewUser.setText(LoginActivity.getEingeloggertUser().getUsername());
@@ -48,3 +69,8 @@ public class WetteAbgebenActivity extends AppCompatActivity {
 
     }
 }
+
+
+
+
+

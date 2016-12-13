@@ -139,10 +139,20 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 
-
                 Intent intent = new Intent(context, WetteAbgebenActivity.class);
 
+
+                Bundle bundle = new Bundle();
+                bundle.putString(HEIM, spiel.get(position).getHeim());
+                bundle.putString(GAST, spiel.get(position).getGast());
+                bundle.putString(DATUM, spiel.get(position).getDatum());
+                bundle.putString(UHRZEIT, spiel.get(position).getUhrzeit());
+
+
+                intent.putExtras(bundle);
+
                 startActivityForResult(intent, 0);
+
 
 
 

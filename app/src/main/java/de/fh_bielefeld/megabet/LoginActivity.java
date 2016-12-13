@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         user.add(new User("afoerster@fh-bielefeld.de" ,"apple", "true", 100, "true", 1));
         user.add(new User("asediqi@fh-bielefeld.de" ,"htc", "true", 77, "false", 2));
         user.add(new User("sbrokmeier@fh-bielefeld.de" ,"samsung", "true", 80, "true", 3));
-        user.add(new User("skleemann@fh-bielefeld.de" ,"lg", "true", 84, "false", 4));
+        user.add(new User("jkleemann@fh-bielefeld.de" ,"lg", "true", 84, "false", 4));
 
 
     }
