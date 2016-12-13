@@ -108,7 +108,7 @@ public class UserActivity extends AppCompatActivity {
     public void loadSpiel(){
 
         spiel.add(new Spiel("SC Paderborn", "DSC Bielefeld" , 0, 0, "18:00", "31.12.16", 0, 1));
-        spiel.add(new Spiel("FC Bayern", "Borussia Dortmund" , 0, 0, "18:00", "12.01.17", 0, 2));
+        spiel.add(new Spiel("FC Bayern", "Hertha BSC" , 0, 0, "18:00", "12.01.17", 0, 2));
         spiel.add(new Spiel("RB Leipzig", "Vfl Stuttgart" , 0, 0, "18:00", "21.01.17", 0, 3));
         spiel.add(new Spiel("Werder Bremen", "Hamburg SV" , 0, 0, "18:00", "27.01.17", 0, 4));
 

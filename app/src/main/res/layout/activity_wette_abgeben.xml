@@ -24,22 +24,29 @@
             android:layout_marginBottom="20dp">
 
             <TextView
-                android:text="asediqi@fh-bielefeld.de"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/TextViewUsername"
-                android:gravity="left"
-                android:layout_weight="1" />
+                android:id="@+id/wette_textViewUsername"
+                android:layout_weight="1"
+                android:textAlignment="textStart" />
 
             <TextView
-                android:text="100 Taler"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/wette_TextViewTaler"
+                android:textColor="@android:color/holo_orange_light"
+                android:gravity="right"
+                android:layout_marginRight="5dp" />
+
+            <TextView
+                android:text="Taler"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/TextViewTaler"
-                android:textColor="@android:color/holo_orange_light"
-                android:layout_row="0"
-                android:gravity="right"
-                android:layout_column="9" />
+                android:id="@+id/textViewTaler"
+                android:textAlignment="viewEnd"
+                android:textAllCaps="false"
+                android:textColor="@android:color/holo_orange_light" />
 
         </LinearLayout>
 
@@ -64,14 +71,38 @@
                 android:textStyle="normal|bold"
                 android:layout_weight="0.13" />
 
-            <TextView
-                android:text="Spieldatum: 30.12.16 18:00 Uhr"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textViewSpieldatum"
-                android:layout_marginTop="20dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:layout_marginBottom="20dp" />
+                android:layout_weight="0.06">
+
+                <TextView
+                    android:text="Spieldatum: "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textViewSpieldatum"
+                    android:layout_marginTop="20dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_marginBottom="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/wette_textViewSpieldatum"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/wette_textViewUhrzeit"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="2dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            </LinearLayout>
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -104,22 +135,20 @@
                 android:layout_marginTop="12dp">
 
                 <TextView
-                    android:text="RB Leipzig"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/textViewHeimmannschaft"
+                    android:id="@+id/wette_textViewHeimmannschaft"
                     android:gravity="center_vertical|center_horizontal"
-                    android:layout_weight="0.14"
+                    android:layout_weight="0.09"
                     android:textAppearance="@android:style/TextAppearance.Material.Small"
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:textColor="@android:color/white" />
 
                 <TextView
-                    android:text="DSC Bielefeld"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/textViewGastmannschaft"
+                    android:id="@+id/wette_textViewGastmannschaft"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:gravity="center_vertical|center_horizontal"
@@ -179,7 +208,7 @@
                     android:ems="10"
                     android:id="@+id/editTextWetteinsatz"
                     android:background="@android:color/background_light"
-                    android:gravity="left"
+                    android:gravity="right"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/colorPrimaryDark" />
 
