@@ -68,11 +68,11 @@ public class UserActivity extends AppCompatActivity {
     private void loadData(){
         textViewUser = (TextView) findViewById(R.id.user_textViewUsername);
         textViewTaler = (TextView) findViewById(R.id.user_TextViewTaler);
-        // TODO: findview for all views
+        // findview for all views
 
         textViewUser.setText(LoginActivity.getEingeloggertUser().getUsername());
         textViewTaler.setText(LoginActivity.getEingeloggertUser().getTaler());
-        // TODO: set text
+        //set text
     }
 
 
