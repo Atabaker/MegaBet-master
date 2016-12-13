@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
             String username = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.USERNAME));
             String passwort = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.PASSWORT));
             String aktiv = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.AKTIV));
-            String taler = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.TALER));
+            double taler = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.TALER));
             String admin = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.ADMIN));
 
             user.add(new User(username,passwort, aktiv, taler, admin, userID));
@@ -78,10 +78,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loadUser(){
 
-        user.add(new User("afoerster@fh-bielefeld.de" ,"apple", "true", "100", "true", 1));
-        user.add(new User("asediqi@fh-bielefeld.de" ,"htc", "true", "77", "false", 2));
-        user.add(new User("sbrokmeier@fh-bielefeld.de" ,"samsung", "true", "80", "true", 3));
-        user.add(new User("skleemann@fh-bielefeld.de" ,"lg", "true", "84", "false", 4));
+        user.add(new User("afoerster@fh-bielefeld.de" ,"apple", "true", 100, "true", 1));
+        user.add(new User("asediqi@fh-bielefeld.de" ,"htc", "true", 77, "false", 2));
+        user.add(new User("sbrokmeier@fh-bielefeld.de" ,"samsung", "true", 80, "true", 3));
+        user.add(new User("skleemann@fh-bielefeld.de" ,"lg", "true", 84, "false", 4));
 
 
     }
