@@ -43,6 +43,8 @@ public class UserActivity extends AppCompatActivity {
 
     private User eingeloggertUser;
 
+    String user_taler = Double.toString(LoginActivity.getEingeloggertUser().getTaler());
+
     private TextView textViewUser;
     private TextView textViewTaler;
 
@@ -70,8 +72,10 @@ public class UserActivity extends AppCompatActivity {
         textViewTaler = (TextView) findViewById(R.id.user_TextViewTaler);
         // findview for all views
 
+
+
         textViewUser.setText(LoginActivity.getEingeloggertUser().getUsername());
-        textViewTaler.setText(LoginActivity.getEingeloggertUser().getTaler());
+        textViewTaler.setText(user_taler);
         //set text
     }
 
@@ -111,6 +115,16 @@ public class UserActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public String getUser_taler(){
+
+        return user_taler;
+    }
+
+    public void setUser_taler(double user_taler){
+
+        this.user_taler = Double.toString(user_taler);
     }
 
 

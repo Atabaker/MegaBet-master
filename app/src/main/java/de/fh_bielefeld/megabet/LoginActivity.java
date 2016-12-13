@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
             String username = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.USERNAME));
             String passwort = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.PASSWORT));
             String aktiv = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.AKTIV));
-            double taler = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.TALER));
+            double taler = cursor.getDouble(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.TALER));
             String admin = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.ADMIN));
 
             user.add(new User(username,passwort, aktiv, taler, admin, userID));
