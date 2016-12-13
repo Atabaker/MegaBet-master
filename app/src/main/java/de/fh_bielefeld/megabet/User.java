@@ -10,7 +10,7 @@ public class User {
     private String username;
     private String passwort;
     private String aktiv;
-    private double talerbestand;
+    private String taler;
     private String admin;
     private long userID;
 
@@ -40,12 +40,12 @@ public class User {
         this.aktiv = aktiv;
     }
 
-    public double getTalerbestand() {
-        return talerbestand;
+    public String getTaler() {
+        return taler;
     }
 
-    public void setTalerbestand(double talerbestand) {
-        this.talerbestand = talerbestand;
+    public void setTalerbestand(String taler) {
+        this.taler = taler;
     }
 
     public String getAdmin() {
@@ -70,18 +70,18 @@ public class User {
     }
 
 // Konstruktor für die Tabelle Login
-    public User (String username, String passwort, String aktiv, double talerbestand, String admin, long userID) {
+    public User (String username, String passwort, String aktiv, String taler, String admin, long userID) {
         this.username = username;
         this.passwort = passwort;
         this.aktiv = aktiv;
-        this.talerbestand = talerbestand;
+        this.taler = taler;
         this.admin = admin;
         this.userID = userID;
     }
 /*
     public User(String username, String passwort, Boolean aktiv, double talerbestand, long userID) {
         this.username = username;
-        this.passwort = passwort;
+        this.passwort = passwort;sx,
         this.aktiv = aktiv;
         this.talerbestand = talerbestand;
         this.admin = false;

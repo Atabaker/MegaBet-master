@@ -125,7 +125,7 @@ public class MegaBetDBAdapter {
         initialValues.put(USERNAME, user.getUsername());
         initialValues.put(PASSWORT, user.getPasswort());
         initialValues.put(AKTIV, user.getAktiv());
-        initialValues.put(TALER, user.getTalerbestand());
+        initialValues.put(TALER, user.getTaler());
         initialValues.put(ADMIN, user.getAdmin());
 
         return database.insert(TABLE_USER,null,initialValues);

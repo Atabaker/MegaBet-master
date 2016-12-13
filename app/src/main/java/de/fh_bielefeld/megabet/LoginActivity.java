@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,11 @@ public class LoginActivity extends AppCompatActivity {
     public static final String TALER = "taler";
     public static final String ADMIN = "admin";
 
+    public static User getEingeloggertUser() {
+        return eingeloggertUser;
+    }
+
+    static User eingeloggertUser;
 
 
 
@@ -60,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
             String username = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.USERNAME));
             String passwort = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.PASSWORT));
             String aktiv = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.AKTIV));
-            double taler = cursor.getDouble(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.TALER));
+            String taler = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.TALER));
             String admin = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.ADMIN));
 
             user.add(new User(username,passwort, aktiv, taler, admin, userID));
@@ -72,10 +78,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loadUser(){
 
-        user.add(new User("afoerster@fh-bielefeld.de" ,"apple", "true", 100, "true", 1));
-        user.add(new User("asediqi@fh-bielefeld.de" ,"htc", "true", 77, "false", 2));
-        user.add(new User("sbrokmeier@fh-bielefeld.de" ,"samsung", "true", 80, "true", 3));
-        user.add(new User("skleemann@fh-bielefeld.de" ,"lg", "true", 80, "false", 4));
+        user.add(new User("afoerster@fh-bielefeld.de" ,"apple", "true", "100", "true", 1));
+        user.add(new User("asediqi@fh-bielefeld.de" ,"htc", "true", "77", "false", 2));
+        user.add(new User("sbrokmeier@fh-bielefeld.de" ,"samsung", "true", "80", "true", 3));
+        user.add(new User("skleemann@fh-bielefeld.de" ,"lg", "true", "84", "false", 4));
 
 
     }
@@ -92,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 
-
+                eingeloggertUser = user.get(position);
                 if(user.get(position).getAdmin() == "false") {
                     Intent intent = new Intent(context, UserActivity.class);
 
@@ -111,3 +117,4 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 }
+

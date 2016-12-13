@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,39 +24,56 @@ import java.util.Collections;
 public class UserActivity extends AppCompatActivity {
 
 
-        final Context context = this;
+    final Context context = this;
 
-        ArrayAdapter<Spiel> adapter;
+    ArrayAdapter<Spiel> adapter;
 
-        ArrayList<Spiel> spiel = new ArrayList<Spiel>();
+    ArrayList<Spiel> spiel = new ArrayList<Spiel>();
 
-        private MegaBetDBAdapter dbHelper;
-
-
-        public static final String HEIM = "heim";
-        public static final String GAST = "gast";
-        public static final String TORE_HEIM = "tore_heim";
-        public static final String TORE_GAST = "tore_gast";
-        public static final String DATUM = "datum";
-        public static final String UHRZEIT = "uhrzeit";
-        public static final String ERGEBNIS = "ergebnis";
+    private MegaBetDBAdapter dbHelper;
 
 
+    public static final String HEIM = "heim";
+    public static final String GAST = "gast";
+    public static final String TORE_HEIM = "tore_heim";
+    public static final String TORE_GAST = "tore_gast";
+    public static final String DATUM = "datum";
+    public static final String UHRZEIT = "uhrzeit";
+    public static final String ERGEBNIS = "ergebnis";
+
+    private User eingeloggertUser;
+
+    private TextView textViewUser;
+    private TextView textViewTaler;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user);
+
+        dbHelper = new MegaBetDBAdapter(this);
+
+        eingeloggertUser = LoginActivity.getEingeloggertUser();
 
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_user);
+        loadData();
 
-            dbHelper = new MegaBetDBAdapter(this);
+        fillData();
 
-            fillData();
+        loadSpiel();
 
-            loadSpiel();
+        createTableView();
+    }
 
-            createTableView();
-        }
+    private void loadData(){
+        textViewUser = (TextView) findViewById(R.id.user_textViewUsername);
+        textViewTaler = (TextView) findViewById(R.id.user_TextViewTaler);
+        // TODO: findview for all views
+
+        textViewUser.setText(LoginActivity.getEingeloggertUser().getUsername());
+        textViewTaler.setText(LoginActivity.getEingeloggertUser().getTaler());
+        // TODO: set text
+    }
 
 
     public void fillData() {
