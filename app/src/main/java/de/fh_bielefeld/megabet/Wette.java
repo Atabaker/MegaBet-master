@@ -6,20 +6,30 @@ package de.fh_bielefeld.megabet;
 
 public class Wette {
     // Tabellenspalten Tabelle Wette
-    private int spieleId;
+    private long spielID;
     private String username;
     private int tipp;
     private double einsatz;
     private double wettgewinn;
+    private long wettID;
 
 // SETTER und GETTER SPIEL
 
-    public int getSpieleId() {
-        return spieleId;
+    public long getSpielID() {
+        return spielID;
     }
 
-    public void setSpieleId(int spieleId) {
-        this.spieleId = spieleId;
+    public void setSpielID(long spielID) {
+        this.spielID = spielID;
+    }
+
+
+    public long getWettID() {
+        return wettID;
+    }
+
+    public void setWettID(long wettID) {
+        this.wettID = wettID;
     }
 
     public String getUsername() {
@@ -55,16 +65,17 @@ public class Wette {
     }
 
     //Konstruktor Wette
-    public Wette(int spieleId, String username, int tipp, double einsatz, double wettgewinn) {
-        this.spieleId = spieleId;
+    public Wette(long spieleId, long wettID, String username, int tipp, double einsatz, double wettgewinn) {
+        this.spielID = spieleId;
+        this.wettID = wettID;
         this.username = username;
         this.tipp = tipp;
         this.einsatz = einsatz;
         this.wettgewinn = wettgewinn;
     }
 
-    public Wette(int spieleId, String username, int tipp, double einsatz) {
-        this.spieleId = spieleId;
+    public Wette(long spieleId, String username, int tipp, double einsatz) {
+        this.spielID = spieleId;
         this.username = username;
         this.tipp = tipp;
         this.einsatz = einsatz;
@@ -77,6 +88,6 @@ public class Wette {
 
     // gibt als String zurück: SpielId + Username + Tipp + Einsatz + Wettgewinn
     public String toString() {
-        return spieleId + " , " + username + " , " + tipp + " , " + einsatz + " , " + wettgewinn;
+        return spielID + " , " + username + " , " + tipp + " , " + einsatz + " , " + wettgewinn;
     }
 }
