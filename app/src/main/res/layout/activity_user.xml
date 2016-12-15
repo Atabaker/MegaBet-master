@@ -67,7 +67,7 @@
 
             <ListView
                 android:layout_width="match_parent"
-                android:id="@+id/ListViewWettereignisse"
+                android:id="@+id/user_ListViewWettereignisse"
                 android:elevation="1dp"
                 android:layout_weight="1"
                 android:layout_marginTop="7dp"
@@ -92,7 +92,7 @@
 
             <ListView
                 android:layout_width="match_parent"
-                android:id="@+id/ListViewMeineWetten"
+                android:id="@+id/user_ListViewMeineWetten"
                 android:layout_marginTop="5dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

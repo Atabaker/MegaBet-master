@@ -176,7 +176,7 @@
                     android:text="Sieg Heim"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/radioButtonHeim"
+                    android:id="@+id/wette_radioButtonHeim"
                     android:layout_weight="1"
                     android:checked="true" />
 
@@ -184,7 +184,7 @@
                     android:text="Sieg Gast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/radioButtonGast"
+                    android:id="@+id/wette_radioButtonGast"
                     android:layout_weight="8.70" />
 
                 <RadioButton
@@ -192,7 +192,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:id="@+id/radioButtonUnentschieden" />
+                    android:id="@+id/wette_radioButtonUnentschieden" />
 
             </RadioGroup>
 
@@ -216,7 +216,7 @@
                     android:layout_width="42dp"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/editTextWetteinsatz"
+                    android:id="@+id/wette_editTextWetteinsatz"
                     android:background="@android:color/background_light"
                     android:gravity="right"
                     android:layout_height="wrap_content"
@@ -243,7 +243,7 @@
                     android:text="Abbrechen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/buttonAbbrechen"
+                    android:id="@+id/wette_buttonAbbrechen"
                     android:layout_weight="1"
                     android:onClick="onClickWetteAbgeben" />
 
@@ -251,7 +251,7 @@
                     android:text="OK"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/buttonOk"
+                    android:id="@+id/wette_buttonOk"
                     android:layout_weight="1" />
             </LinearLayout>
         </LinearLayout>

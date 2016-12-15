@@ -130,7 +130,7 @@ public class UserActivity extends AppCompatActivity {
 
     public void createTableView(){
 
-        final ListView spielListe = (ListView) findViewById(R.id.ListViewWettereignisse);
+        final ListView spielListe = (ListView) findViewById(R.id.user_ListViewWettereignisse);
         adapter = new ArrayAdapter<Spiel>(this, android.R.layout.simple_expandable_list_item_1, spiel);
         spielListe.setAdapter(adapter);
 
