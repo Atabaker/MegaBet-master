@@ -1,14 +1,23 @@
 package de.fh_bielefeld.megabet;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import static de.fh_bielefeld.megabet.R.id.textViewTaler;
+import static de.fh_bielefeld.megabet.R.id.wette_radioButtonHeim;
 
 public class WetteAbgebenActivity extends AppCompatActivity {
 
@@ -22,27 +31,51 @@ public class WetteAbgebenActivity extends AppCompatActivity {
     private TextView textViewUhrzeit;
     private TextView textViewHeim;
     private TextView textViewGast;
+    boolean heimGewinnt;
+    boolean gastGewinnt;
+    boolean unentschieden;
+    private Handler handler;
 
-    //Deklarieren der RadioButton Auswahl
-    //TODO: !!! RadioButton in eine Methode einarbeiten und dann wieder auskommentieren !!!
-    /*  RadioButton heimRadioButton = (RadioButton)findViewById(R.id.wette_radioButtonHeim);
-    boolean heimGewinnt = heimRadioButton.isChecked();
-    RadioButton gastRadioButton = (RadioButton)findViewById(R.id.wette_radioButtonGast);
-    boolean gastGewinnt = heimRadioButton.isChecked();
-    RadioButton untenschiedenRadioButton = (RadioButton)findViewById(R.id.wette_radioButtonUnentschieden);
-    boolean unentschiedenGewinnt = heimRadioButton.isChecked();
-*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wette_abgeben);
 
         eingeloggertUser = LoginActivity.getEingeloggertUser();
-
         loadData();
+
+        //Deklarieren der RadioButton Auswahl
+        //TODO: !!! RadioButton in eine Methode einarbeiten und dann wieder auskommentieren !!!
+        RadioButton heimRadioButton = (RadioButton) findViewById(wette_radioButtonHeim);
+        heimGewinnt = heimRadioButton.isChecked();
+
+        RadioButton gastRadioButton = (RadioButton) findViewById(R.id.wette_radioButtonGast);
+        gastGewinnt = gastRadioButton.isChecked();
+
+        RadioButton untenschiedenRadioButton = (RadioButton) findViewById(R.id.wette_radioButtonUnentschieden);
+        unentschieden = untenschiedenRadioButton.isChecked();
+
+        loadWettausgang();
+
     }
 
-    private void loadData(){
+    private void loadWettausgang() {
+        if (heimGewinnt == true) {
+            int x = 1;
+
+            }
+        else if (gastGewinnt == true) {
+            int x = 2;
+
+        } else if (unentschieden == true) {
+                int x = 3;
+            }else {
+
+        }
+    }
+
+
+    private void loadData() {
         textViewUser = (TextView) findViewById(R.id.wette_textViewUsername);
         textViewTaler = (TextView) findViewById(R.id.wette_TextViewTaler);
         textViewDatum = (TextView) findViewById(R.id.wette_textViewSpieldatum);
@@ -79,7 +112,17 @@ public class WetteAbgebenActivity extends AppCompatActivity {
 
 
     }
-    public void Auswahl(){
-        // TODO : Abfrage der Gruppenbutton
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
     }
 }
