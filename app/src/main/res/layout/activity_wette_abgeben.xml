@@ -172,7 +172,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_weight="0.19"
                 android:id="@+id/wette_RadioGroupAuswahl"
-                android:onClick="onClickWetteAbgeben">
+                android:onClick="onClickWetteAbgeben"
+                android:checkedButton="@+id/wette_radioButtonUnentschieden">
 
                 <RadioButton
                     android:text="Sieg Heim"
@@ -247,14 +248,15 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/wette_buttonAbbrechen"
                     android:layout_weight="1"
-                    android:onClick="onClickWetteAbgeben" />
+                    android:onClick="onClickWetteCancel" />
 
                 <Button
                     android:text="OK"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/wette_buttonOk"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:onClick="onClickWetteAbgeben"/>
             </LinearLayout>
         </LinearLayout>
 

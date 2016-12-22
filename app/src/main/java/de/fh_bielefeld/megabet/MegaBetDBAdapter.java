@@ -74,16 +74,16 @@ public class MegaBetDBAdapter {
     //TABLE CREATE STATEMENT ( Spiel )
     private static final String SQL_CREATE_SPIEL = "CREATE TABLE " + TABLE_SPIEL +
             "(" + KEY_SPIEL_ID + " Integer PRIMARY KEY AUTOINCREMENT, " +
-            HEIM + " Text Not Null," +
+            HEIM + " Text Not Null, " +
             GAST + " Text Not Null, " +
             TORE_HEIM + " INTEGER Not Null, " +
             TORE_GAST + " INTEGER Not Null, " +
-            DATUM + " Double Not Null," +
+            DATUM + " Double Not Null, " +
             UHRZEIT + " Double Not Null, " +
             ERGEBNIS + " INTEGER Not Null);";
 
     // Variables TABLE Wette / column names
-//    private static final String TABLE_WETTE = "wett_id";
+
     public static final String KEY_WETTE_ID = "_wettID";
 
     //   public static final String KEY_USERNAME = "username";
@@ -97,7 +97,7 @@ public class MegaBetDBAdapter {
             KEY_SPIEL_ID + " Text Not Null, " +
             USERNAME + " Text Not Null, " +
             TIPP + " INTEGER Not Null, " +
-            EINSATZ + " Double Not Null," +
+            EINSATZ + " Double Not Null, " +
             WETTGEWINN + " DOUBLE Not Null);";
 
 
@@ -145,6 +145,17 @@ public class MegaBetDBAdapter {
 
     }
 
+    public long createWette(Wette wette){
+        ContentValues iniVaulues = new ContentValues();
+        iniVaulues.put(KEY_SPIEL_ID, wette.getSpielID());
+        iniVaulues.put(USERNAME, wette.getUsername());
+        iniVaulues.put(TIPP, wette.getTipp());
+        iniVaulues.put(EINSATZ, wette.getEinsatz());
+        iniVaulues.put(WETTGEWINN, wette.getWettgewinn());
+
+        return database.insert(TABLE_WETTE, null, iniVaulues);
+    }
+
     public Cursor fetchAllUser() {
         return database.query(TABLE_USER, new String[] {KEY_USER_ID, USERNAME,
                 PASSWORT, AKTIV, TALER, ADMIN}, null, null, null, null, null);
@@ -153,6 +164,11 @@ public class MegaBetDBAdapter {
     public Cursor fetchAllSpiele(){
         return database.query(TABLE_SPIEL, new String[] {KEY_SPIEL_ID, HEIM, GAST,
                 TORE_HEIM, TORE_GAST, UHRZEIT, DATUM, ERGEBNIS}, null, null,null, null, null);
+    }
+
+    public Cursor fetchAllWetten(){
+        return database.query(TABLE_WETTE, new String[] {KEY_WETTE_ID, KEY_SPIEL_ID, USERNAME,
+                TIPP, EINSATZ, WETTGEWINN}, null, null,null, null, null);
     }
 
     public Cursor fetchSpieler(String spielID) throws SQLException {
@@ -170,6 +186,17 @@ public class MegaBetDBAdapter {
 
         Cursor cursor = database.query(false, TABLE_USER, new String[] {KEY_USER_ID,
                         USERNAME, PASSWORT, AKTIV, TALER, ADMIN}, KEY_USER_ID + "=" + userID, null,
+                null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
+    public Cursor fetchWette(String wettID) throws SQLException {
+
+        Cursor cursor = database.query(false, TABLE_WETTE, new String[] {KEY_WETTE_ID,
+                        KEY_SPIEL_ID, USERNAME, TIPP, EINSATZ, WETTGEWINN}, KEY_WETTE_ID + "=" + wettID, null,
                 null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
@@ -200,36 +227,3 @@ public class MegaBetDBAdapter {
 
 
 
-/*
-    // Constructor
-    public MegaBetDBAdapter(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        Log.d(LOG_TAG, "DB-Helper hat die Datenbank: " + getDatabaseName() + " erzeugt.");
-    }
-
-
-
-    // Create TABLE
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        // creating required tables
-        db.execSQL(TABLE_SPIELER);
-        db.execSQL(TABLE_SPIEL);
-        db.execSQL(TABLE_WETTE);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        // on upgrade drop older tables
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPIELER);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPIEL);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_WETTE);
-
-        // create new tables
-        onCreate(db);
-        //   throw new UnsupportedOperationException();
-    }
-}
-
-*/

@@ -26,13 +26,18 @@ public class UserActivity extends AppCompatActivity {
 
     final Context context = this;
 
-    ArrayAdapter<Spiel> adapter;
+    ArrayAdapter<Spiel> adapterS;
+
+    ArrayAdapter<Wette> adapterW;
+
+    ArrayList<Wette> wette = new ArrayList<Wette>();
 
     ArrayList<Spiel> spiel = new ArrayList<Spiel>();
 
+
     private MegaBetDBAdapter dbHelper;
 
-
+    public static final String KEY_SPIEL_ID = "_spiel_id";
     public static final String HEIM = "heim";
     public static final String GAST = "gast";
     public static final String TORE_HEIM = "tore_heim";
@@ -40,6 +45,12 @@ public class UserActivity extends AppCompatActivity {
     public static final String DATUM = "datum";
     public static final String UHRZEIT = "uhrzeit";
     public static final String ERGEBNIS = "ergebnis";
+
+    public static final String KEY_WETTE_ID = "_wettID";
+    public static final String KEY_USERNAME = "username";
+    public static final String TIPP = "tipp";
+    public static final String EINSATZ = "einsatz";
+    public static final String WETTGEWINN = "wettgewinn";
 
     private User eingeloggertUser;
 
@@ -60,11 +71,15 @@ public class UserActivity extends AppCompatActivity {
 
         loadData();
 
-        fillData();
+        fillDataSpiel();
+
+        fillDataWette();
 
         loadSpiel();
 
-        createTableView();
+        createTableViewSpiel();
+
+        createTableViewWette();
     }
 
     private void loadData(){
@@ -79,8 +94,26 @@ public class UserActivity extends AppCompatActivity {
         //set text
     }
 
+    public void fillDataWette(){
 
-    public void fillData() {
+        dbHelper.open();
+        wette.removeAll(wette);
+        Cursor cursor = dbHelper.fetchAllWetten();
+
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+            long spielID = cursor.getLong(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.KEY_SPIEL_ID));
+            String username = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.USERNAME));
+            int tipp = cursor.getInt(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.TIPP));
+            double einsatz = cursor.getDouble(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.EINSATZ));
+
+            wette.add(new Wette(spielID, username, tipp, einsatz));
+            cursor.moveToNext();
+        }
+        dbHelper.close();
+    }
+
+    public void fillDataSpiel() {
 
         dbHelper.open();
 
@@ -128,11 +161,19 @@ public class UserActivity extends AppCompatActivity {
     }
 
 
-    public void createTableView(){
+    public void createTableViewWette() {
+
+        final ListView wettListe = (ListView) findViewById(R.id.user_ListViewMeineWetten);
+        adapterW = new ArrayAdapter<Wette>(this, android.R.layout.simple_expandable_list_item_1, wette);
+        wettListe.setAdapter(adapterW);
+    }
+
+
+    public void createTableViewSpiel(){
 
         final ListView spielListe = (ListView) findViewById(R.id.user_ListViewWettereignisse);
-        adapter = new ArrayAdapter<Spiel>(this, android.R.layout.simple_expandable_list_item_1, spiel);
-        spielListe.setAdapter(adapter);
+        adapterS = new ArrayAdapter<Spiel>(this, android.R.layout.simple_expandable_list_item_1, spiel);
+        spielListe.setAdapter(adapterS);
 
         spielListe.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
@@ -143,6 +184,7 @@ public class UserActivity extends AppCompatActivity {
 
 
                 Bundle bundle = new Bundle();
+                bundle.putLong(KEY_SPIEL_ID, spiel.get(position).getSpielID());
                 bundle.putString(HEIM, spiel.get(position).getHeim());
                 bundle.putString(GAST, spiel.get(position).getGast());
                 bundle.putString(DATUM, spiel.get(position).getDatum());
