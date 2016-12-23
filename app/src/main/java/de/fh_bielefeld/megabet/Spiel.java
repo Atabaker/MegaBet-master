@@ -24,20 +24,7 @@ public class Spiel {
         this.ergebnis = ergebnis;
         this.spielID = spielID;
     }
-    public Spiel(String heim, String gast, String uhrzeit, String datum){
-        this.heim = heim;
-        this.gast = gast;
-        tore_gast = 0;
-        tore_heim = 0;
-        this.uhrzeit = uhrzeit;
-        this.datum = datum;
-        ergebnis = 0;
 
-    }
-
-    public Spiel(){
-
-    }
 
 // SETTER und GETTER Methoden
 

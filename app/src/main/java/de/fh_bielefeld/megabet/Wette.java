@@ -13,7 +13,10 @@ public class Wette {
     private double wettgewinn;
     private long wettID;
 
-// SETTER und GETTER SPIEL
+
+
+    // SETTER und GETTER SPIEL
+
 
     public long getSpielID() {
         return spielID;
@@ -80,6 +83,8 @@ public class Wette {
         this.tipp = tipp;
         this.einsatz = einsatz;
         wettgewinn = 0;
+
+
     }
 
     public Wette() {
@@ -88,6 +93,6 @@ public class Wette {
 
     // gibt als String zurück: SpielId + Username + Tipp + Einsatz + Wettgewinn
     public String toString() {
-        return spielID + " , " + username + " , " + tipp + " , " + einsatz + " , " + wettgewinn;
+        return   "datum +  + einsatz + T  + heim +  -  + gast";
     }
 }

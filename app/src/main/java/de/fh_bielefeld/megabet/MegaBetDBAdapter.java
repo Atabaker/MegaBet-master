@@ -71,6 +71,7 @@ public class MegaBetDBAdapter {
     public static final String UHRZEIT = "uhrzeit";
     public static final String ERGEBNIS = "ergebnis";
 
+
     //TABLE CREATE STATEMENT ( Spiel )
     private static final String SQL_CREATE_SPIEL = "CREATE TABLE " + TABLE_SPIEL +
             "(" + KEY_SPIEL_ID + " Integer PRIMARY KEY AUTOINCREMENT, " +
@@ -98,7 +99,8 @@ public class MegaBetDBAdapter {
             USERNAME + " Text Not Null, " +
             TIPP + " INTEGER Not Null, " +
             EINSATZ + " Double Not Null, " +
-            WETTGEWINN + " DOUBLE Not Null);";
+            WETTGEWINN + " DOUBLE Not Null, " +
+            "FOREIGN KEY("+ KEY_SPIEL_ID +") REFERENCES " + TABLE_SPIEL + "("+KEY_SPIEL_ID+"));";
 
 
     private final Context ctx;
@@ -153,6 +155,8 @@ public class MegaBetDBAdapter {
         iniVaulues.put(EINSATZ, wette.getEinsatz());
         iniVaulues.put(WETTGEWINN, wette.getWettgewinn());
 
+        dbHelper = new DatabaseHelper(ctx);
+        database = dbHelper.getWritableDatabase();
         return database.insert(TABLE_WETTE, null, iniVaulues);
     }
 
@@ -163,7 +167,7 @@ public class MegaBetDBAdapter {
 
     public Cursor fetchAllSpiele(){
         return database.query(TABLE_SPIEL, new String[] {KEY_SPIEL_ID, HEIM, GAST,
-                TORE_HEIM, TORE_GAST, UHRZEIT, DATUM, ERGEBNIS}, null, null,null, null, null);
+                TORE_HEIM, TORE_GAST}, null, null,null, null, null);
     }
 
     public Cursor fetchAllWetten(){
@@ -212,14 +216,14 @@ public class MegaBetDBAdapter {
         }
 
         @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(SQL_CREATE_USER);
-            db.execSQL(SQL_CREATE_SPIEL);
-            db.execSQL(SQL_CREATE_WETTE);
+        public void onCreate(SQLiteDatabase database) {
+            database.execSQL(SQL_CREATE_USER);
+            database.execSQL(SQL_CREATE_SPIEL);
+            database.execSQL(SQL_CREATE_WETTE);
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
             // Not used, but you could upgrade the database with ALTER scripts
         }
     }

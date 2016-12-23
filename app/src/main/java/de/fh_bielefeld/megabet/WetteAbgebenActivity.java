@@ -163,6 +163,7 @@ public class WetteAbgebenActivity extends AppCompatActivity {
         int tipp = loadWettausgang();
         double einsatz = loadWettEinsatz();
 
+
         Wette wette = new Wette(spielID, username, tipp, einsatz);
 
         dbHelper.createWette(wette);
