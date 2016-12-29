@@ -12,6 +12,9 @@ public class Wette {
     private double einsatz;
     private double wettgewinn;
     private long wettID;
+    private String heim;
+    private String gast;
+    private String datum;
 
 
 
@@ -87,8 +90,11 @@ public class Wette {
 
     }
 
-    public Wette() {
-
+    public Wette(String datum, double einsatz, String heim, String gast) {
+        this.datum = datum;
+        this.einsatz = einsatz;
+        this.heim = heim;
+        this.gast = gast;
     }
 
     // gibt als String zurück: SpielId + Username + Tipp + Einsatz + Wettgewinn

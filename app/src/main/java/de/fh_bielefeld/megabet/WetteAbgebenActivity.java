@@ -137,10 +137,6 @@ public class WetteAbgebenActivity extends AppCompatActivity {
         //set text
     }
 
-    public void wetteAbgeben(){
-
-
-    }
 
     public void onClickWetteCancel(View view) {
 

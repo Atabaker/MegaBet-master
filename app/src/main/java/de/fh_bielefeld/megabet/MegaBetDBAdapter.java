@@ -12,7 +12,7 @@ package de.fh_bielefeld.megabet;
 // Executed TABLE CREATE statements in onCreate() method.
 
 /**
- * Created by Jessi on 29.11.2016.
+ * Created by Jessi on 29.11.201 6.
  */
 
 //import info.androidhive.sqlite.helper;
@@ -41,6 +41,7 @@ public class MegaBetDBAdapter {
     private static final String TABLE_USER = "user";
     private static final String TABLE_SPIEL = "spiel";
     private static final String TABLE_WETTE = "wette";
+    private static final String WETTE_SPIEL = "wette_spiel";
 
     // Variables TABLE login / column names
     public static final String KEY_USER_ID = "_userID";
@@ -101,6 +102,8 @@ public class MegaBetDBAdapter {
             EINSATZ + " Double Not Null, " +
             WETTGEWINN + " DOUBLE Not Null, " +
             "FOREIGN KEY("+ KEY_SPIEL_ID +") REFERENCES " + TABLE_SPIEL + "("+KEY_SPIEL_ID+"));";
+
+
 
 
     private final Context ctx;
@@ -166,8 +169,26 @@ public class MegaBetDBAdapter {
     }
 
     public Cursor fetchAllSpiele(){
-        return database.query(TABLE_SPIEL, new String[] {KEY_SPIEL_ID, HEIM, GAST,
-                TORE_HEIM, TORE_GAST}, null, null,null, null, null);
+
+   /*     String SQL_CREATE_GEWETTET = "CREATE VIEW wette_spiel_ as SELECT spiel.datum, wette.einsatz, spiel.heim, spiel.gast " +
+                "FROM wette, spiel " +
+                "WHERE spiel._spiel_id = wette._spiel_id;";
+
+        database.execSQL(SQL_CREATE_GEWETTET);
+
+        String squery = "SELECT * FROM wette_spiel";
+
+        return database.query(WETTE_SPIEL,new String [] {DATUM, EINSATZ, HEIM, GAST}, null, null, null, null, null);
+*/
+        //String squery = "select spiel.datum, wette.einsatz, spiel.heim, spiel.gast from wette, spiel where spiel._spiel_id = wette._spiel_id;";
+
+       // String selectquery = "SELECT " + TABLE_SPIEL + "." + DATUM + ", " + TABLE_WETTE + "." + EINSATZ + ", "  + TABLE_SPIEL + "." + HEIM + ", " + TABLE_SPIEL + "." + GAST + " FROM " + TABLE_SPIEL + ", " + TABLE_WETTE + " WHERE " + TABLE_SPIEL + "." + KEY_SPIEL_ID + " = " + TABLE_WETTE + "." + KEY_SPIEL_ID+"";
+
+
+        //return database.query(TABLE_SPIEL, new String[] {KEY_SPIEL_ID, HEIM, GAST,
+        //       TORE_HEIM, TORE_GAST}, null, null,null, null, null);
+
+        return null;
     }
 
     public Cursor fetchAllWetten(){
@@ -189,7 +210,7 @@ public class MegaBetDBAdapter {
     public Cursor fetchUser(String userID) throws SQLException {
 
         Cursor cursor = database.query(false, TABLE_USER, new String[] {KEY_USER_ID,
-                        USERNAME, PASSWORT, AKTIV, TALER, ADMIN}, KEY_USER_ID + "=" + userID, null,
+                        USERNAME, PASSWORT, AKTIV, TALER}, KEY_USER_ID + "=" + userID, null,
                 null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
@@ -199,9 +220,12 @@ public class MegaBetDBAdapter {
 
     public Cursor fetchWette(String wettID) throws SQLException {
 
-        Cursor cursor = database.query(false, TABLE_WETTE, new String[] {KEY_WETTE_ID,
-                        KEY_SPIEL_ID, USERNAME, TIPP, EINSATZ, WETTGEWINN}, KEY_WETTE_ID + "=" + wettID, null,
+
+
+           Cursor cursor = database.query(true, TABLE_WETTE, new String[] {KEY_WETTE_ID,
+                        KEY_SPIEL_ID, USERNAME, TIPP, EINSATZ, WETTGEWINN}, KEY_SPIEL_ID + "=" + wettID, null,
                 null, null, null, null);
+
         if (cursor != null) {
             cursor.moveToFirst();
         }

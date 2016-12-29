@@ -102,15 +102,14 @@ public class UserActivity extends AppCompatActivity {
 
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
-            long spielID = cursor.getLong(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.KEY_SPIEL_ID));
-            String username = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.USERNAME));
-            int tipp = cursor.getInt(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.TIPP));
-            double einsatz = cursor.getDouble(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.EINSATZ));
             String datum = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.DATUM));
+            double einsatz = cursor.getDouble(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.EINSATZ));
             String heim = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.HEIM));
             String gast = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.GAST));
 
-            wette.add(new Wette(spielID, username, tipp, einsatz,datum, heim, gast));
+
+
+            wette.add(new Wette(datum, einsatz, heim, gast));
             cursor.moveToNext();
         }
         dbHelper.close();
