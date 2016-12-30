@@ -77,6 +77,8 @@ public class UserActivity extends AppCompatActivity {
 
         loadSpiel();
 
+      //  loadWette();
+
         createTableViewSpiel();
 
         createTableViewWette();
@@ -102,14 +104,13 @@ public class UserActivity extends AppCompatActivity {
 
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
-            String datum = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.DATUM));
+            long spielID = cursor.getLong(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.KEY_SPIEL_ID));
+            String username = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.USERNAME));
+            int tipp = cursor.getInt(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.TIPP));
             double einsatz = cursor.getDouble(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.EINSATZ));
-            String heim = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.HEIM));
-            String gast = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.GAST));
 
 
-
-            wette.add(new Wette(datum, einsatz, heim, gast));
+            wette.add(new Wette(spielID, username, tipp, einsatz));
             cursor.moveToNext();
         }
         dbHelper.close();
@@ -149,6 +150,18 @@ public class UserActivity extends AppCompatActivity {
 
 
 
+
+    }
+
+    public void loadWette(Bundle wettbundle){
+
+
+        String datum = wettbundle.getString(WetteAbgebenActivity.DATUM);
+        double einsatz = wettbundle.getDouble(WetteAbgebenActivity.EINSATZ);
+        String heim = wettbundle.getString(WetteAbgebenActivity.HEIM);
+        String gast = wettbundle.getString(WetteAbgebenActivity.GAST);
+
+        wette.add(new Wette(datum, einsatz, heim, gast));
 
     }
 

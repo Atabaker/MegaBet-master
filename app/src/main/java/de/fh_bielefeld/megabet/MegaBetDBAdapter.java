@@ -115,8 +115,12 @@ public class MegaBetDBAdapter {
 
     public MegaBetDBAdapter open() throws SQLException{
 
+
+
         dbHelper = new DatabaseHelper(ctx);
         database = dbHelper.getWritableDatabase();
+
+        //database.delete(TABLE_USER, null, null);
         return this;
     }
 
@@ -132,6 +136,9 @@ public class MegaBetDBAdapter {
         initialValues.put(AKTIV, user.getAktiv());
         initialValues.put(TALER, user.getTaler());
         initialValues.put(ADMIN, user.getAdmin());
+
+        dbHelper = new DatabaseHelper(ctx);
+        database = dbHelper.getWritableDatabase();
 
         return database.insert(TABLE_USER,null,initialValues);
     }
@@ -192,8 +199,13 @@ public class MegaBetDBAdapter {
     }
 
     public Cursor fetchAllWetten(){
-        return database.query(TABLE_WETTE, new String[] {KEY_WETTE_ID, KEY_SPIEL_ID, USERNAME,
-                TIPP, EINSATZ, WETTGEWINN}, null, null,null, null, null);
+
+        String squery = "CREATE VIEW xy AS SELECT spiel.datum, wette.einsatz, spiel.heim, spiel.gast FROM spiel, wette;";
+
+        database.execSQL(squery);
+
+        return database.query("xy", new String[] {DATUM, EINSATZ, HEIM,
+                GAST}, null, null,null, null, null);
     }
 
     public Cursor fetchSpieler(String spielID) throws SQLException {
@@ -241,6 +253,11 @@ public class MegaBetDBAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase database) {
+
+           // String SQL_DELETE_TABLE_USER = "DROP TABLE "+getDatabaseName()+ "." + TABLE_USER +";";
+          //  database.execSQL(SQL_DELETE_TABLE_USER);
+
+
             database.execSQL(SQL_CREATE_USER);
             database.execSQL(SQL_CREATE_SPIEL);
             database.execSQL(SQL_CREATE_WETTE);

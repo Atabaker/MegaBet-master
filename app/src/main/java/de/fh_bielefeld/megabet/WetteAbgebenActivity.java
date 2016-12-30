@@ -3,6 +3,7 @@ package de.fh_bielefeld.megabet;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.renderscript.Double2;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -39,7 +40,11 @@ public class WetteAbgebenActivity extends AppCompatActivity {
     boolean unentschieden;
     private Handler handler;
     int tipp;
-    String einsatz;
+    public static final String HEIM = "heim";
+    public static final String GAST = "gast";
+    public static final String DATUM = "datum";
+    public static final String EINSATZ = "einsatz";
+
 
     private MegaBetDBAdapter dbHelper;
 
@@ -56,9 +61,6 @@ public class WetteAbgebenActivity extends AppCompatActivity {
         eingeloggertUser = LoginActivity.getEingeloggertUser();
         loadData();
 
-        //:TODO Diese beiden Methoden müssten erst bei der Wettabgabe erzeugt werden und nicht bei der Erzeugung der Activity
-        //loadWettausgang();
-        //loadWettEinsatz();
 
     }
 
@@ -68,7 +70,7 @@ public class WetteAbgebenActivity extends AppCompatActivity {
         try {
             editTextEinsatz = (EditText) findViewById(R.id.wette_editTextWetteinsatz);
 
-            einsatz = editTextEinsatz.getText().toString();
+            String einsatz = editTextEinsatz.getText().toString();
 
             double wetteinsatz = Double.parseDouble(einsatz);
 
@@ -154,18 +156,42 @@ public class WetteAbgebenActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle spielbundle = intent.getExtras();
 
+        String datum = spielbundle.getString(UserActivity.DATUM);
+        String heim = spielbundle.getString(UserActivity.HEIM);
+        String gast = spielbundle.getString(UserActivity.GAST);
+
         long spielID = spielbundle.getLong(UserActivity.KEY_SPIEL_ID);
-        String username = eingeloggertUser.getUsername();
         int tipp = loadWettausgang();
-        double einsatz = loadWettEinsatz();
+        double wettEinsatz = loadWettEinsatz();
 
 
-        Wette wette = new Wette(spielID, username, tipp, einsatz);
+
+        Wette wette = new Wette(datum, wettEinsatz, heim, gast);
 
         dbHelper.createWette(wette);
 
+
+
+
+
+        Bundle wettbundle = new Bundle();
+        wettbundle.putString(DATUM, wette.getDatum());
+        wettbundle.putDouble(EINSATZ, wette.getEinsatz());
+        wettbundle.putString(HEIM, wette.getHeim());
+        wettbundle.putString(GAST, wette.getGast());
+
+
+        UserActivity activity = new UserActivity();
+        activity.loadWette(wettbundle);
+
         Intent intenti = new Intent(this, UserActivity.class);
+
+
         startActivity(intenti);
+
+
+
+
     }
 
 

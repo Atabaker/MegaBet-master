@@ -71,17 +71,31 @@ public class LoginActivity extends AppCompatActivity {
 
             user.add(new User(username,passwort, aktiv, taler, admin, userID));
             cursor.moveToNext();
+
         }
+
+
+
         dbHelper.close();
     }
 
 
     public void loadUser(){
 
-        user.add(new User("afoerster@fh-bielefeld.de" ,"apple", "true", 100, "true", 1));
-        user.add(new User("asediqi@fh-bielefeld.de" ,"htc", "true", 77, "false", 2));
-        user.add(new User("sbrokmeier@fh-bielefeld.de" ,"samsung", "true", 80, "true", 3));
-        user.add(new User("jkleemann@fh-bielefeld.de" ,"lg", "true", 84, "false", 4));
+        User user1 = new User("afoerster@fh-bielefeld.de" ,"apple", "true", 100, "true", 1);
+        User user2 = new User("asediqi@fh-bielefeld.de" ,"htc", "true", 77, "false", 2);
+        User user3 = new User("sbrokmeier@fh-bielefeld.de" ,"samsung", "true", 80, "true", 3);
+        User user4 = new User("jkleemann@fh-bielefeld.de" ,"lg", "true", 84, "false", 4);
+
+    /*  dbHelper.createUser(user1);
+        dbHelper.createUser(user2);
+        dbHelper.createUser(user3);
+        dbHelper.createUser(user4);
+
+    */  user.add(user1);
+        user.add(user2);
+        user.add(user3);
+        user.add(user4);
 
 
     }
@@ -115,6 +129,8 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 }
 
