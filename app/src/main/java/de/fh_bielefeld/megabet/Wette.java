@@ -95,8 +95,8 @@ public class Wette {
     }
 
     //Konstruktor Wette
-    public Wette(long spieleId, long wettID, String username, int tipp, double einsatz, double wettgewinn) {
-        this.spielID = spieleId;
+    public Wette(long spielID, long wettID, String username, int tipp, double einsatz, double wettgewinn) {
+        this.spielID = spielID;
         this.wettID = wettID;
         this.username = username;
         this.tipp = tipp;
@@ -104,15 +104,15 @@ public class Wette {
         this.wettgewinn = wettgewinn;
     }
 
-    public Wette(long spieleId, String username, int tipp, double einsatz) {
-        this.spielID = spieleId;
+    public Wette(long spielID, String username, int tipp, double einsatz) {
+        this.spielID = spielID;
         this.username = username;
         this.tipp = tipp;
         this.einsatz = einsatz;
         wettgewinn = 0;
     }
 
-    public Wette(String datum, double einsatz, String heim, String gast) {
+   public Wette(String datum, double einsatz, String heim, String gast) {
 
         this.datum = datum;
         this.einsatz = einsatz;
@@ -121,8 +121,10 @@ public class Wette {
 
     }
 
-    // gibt als String zurück: SpielId + Username + Tipp + Einsatz + Wettgewinn
+
     public String toString() {
-        return   "datum +  + einsatz + T  + heim +  -  + gast";
+     //   return   spielID + " - " + username + " - " + tipp + " - " + einsatz;
+
+        return datum + " | " + heim + " - " + gast + " | " + einsatz + "T";
     }
 }

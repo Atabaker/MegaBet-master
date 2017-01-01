@@ -71,11 +71,13 @@ public class UserActivity extends AppCompatActivity {
 
         loadData();
 
+      //  loadSpiel();
+
         fillDataSpiel();
 
         fillDataWette();
 
-        loadSpiel();
+
 
       //  loadWette();
 
@@ -99,18 +101,18 @@ public class UserActivity extends AppCompatActivity {
     public void fillDataWette(){
 
         dbHelper.open();
-        wette.removeAll(wette);
-        Cursor cursor = dbHelper.fetchAllWetten();
 
+        Cursor cursor = dbHelper.fetchAllWetten();
+        wette.removeAll(wette);
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
-            long spielID = cursor.getLong(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.KEY_SPIEL_ID));
-            String username = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.USERNAME));
-            int tipp = cursor.getInt(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.TIPP));
+            String datum = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.DATUM));
             double einsatz = cursor.getDouble(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.EINSATZ));
+            String heim = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.HEIM));
+            String gast = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.GAST));
 
 
-            wette.add(new Wette(spielID, username, tipp, einsatz));
+            wette.add(new Wette(datum, einsatz, heim, gast));
             cursor.moveToNext();
         }
         dbHelper.close();
@@ -120,9 +122,9 @@ public class UserActivity extends AppCompatActivity {
 
         dbHelper.open();
 
-        spiel.removeAll(spiel);
-        Cursor cursor = dbHelper.fetchAllSpiele();
 
+        Cursor cursor = dbHelper.fetchAllSpiele();
+        spiel.removeAll(spiel);
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
             long spielID = cursor.getLong(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.KEY_SPIEL_ID));
@@ -143,25 +145,16 @@ public class UserActivity extends AppCompatActivity {
 
     public void loadSpiel(){
 
-        spiel.add(new Spiel("SC Paderborn", "DSC Bielefeld" , 0, 0, "18:00", "31.12.16", 0, 1));
-        spiel.add(new Spiel("FC Bayern", "Hertha BSC" , 0, 0, "18:00", "12.01.17", 0, 2));
-        spiel.add(new Spiel("RB Leipzig", "Vfl Stuttgart" , 0, 0, "18:00", "21.01.17", 0, 3));
-        spiel.add(new Spiel("Werder Bremen", "Hamburg SV" , 0, 0, "18:00", "27.01.17", 0, 4));
+        Spiel spiel1 = new Spiel("SC Paderborn", "DSC Bielefeld" , 0, 0, "18:00", "31.12.16", 0, 1);
+        Spiel spiel2 = new Spiel("FC Bayern", "Hertha BSC" , 0, 0, "18:00", "12.01.17", 0, 2);
+        Spiel spiel3 = new Spiel("RB Leipzig", "Vfl Stuttgart" , 0, 0, "18:00", "21.01.17", 0, 3);
+        Spiel spiel4 = new Spiel("Werder Bremen", "Hamburg SV" , 0, 0, "18:00", "27.01.17", 0, 4);
 
+        dbHelper.createSpiel(spiel1);
+        dbHelper.createSpiel(spiel2);
+        dbHelper.createSpiel(spiel3);
+        dbHelper.createSpiel(spiel4);
 
-
-
-    }
-
-    public void loadWette(Bundle wettbundle){
-
-
-        String datum = wettbundle.getString(WetteAbgebenActivity.DATUM);
-        double einsatz = wettbundle.getDouble(WetteAbgebenActivity.EINSATZ);
-        String heim = wettbundle.getString(WetteAbgebenActivity.HEIM);
-        String gast = wettbundle.getString(WetteAbgebenActivity.GAST);
-
-        wette.add(new Wette(datum, einsatz, heim, gast));
 
     }
 
@@ -172,7 +165,8 @@ public class UserActivity extends AppCompatActivity {
 
     public void setUser_taler(double user_taler){
 
-        this.user_taler = Double.toString(user_taler);
+        eingeloggertUser = LoginActivity.getEingeloggertUser();
+        eingeloggertUser.setTaler(user_taler);
     }
 
 
@@ -190,7 +184,9 @@ public class UserActivity extends AppCompatActivity {
         adapterS = new ArrayAdapter<Spiel>(this, android.R.layout.simple_expandable_list_item_1, spiel);
         spielListe.setAdapter(adapterS);
 
+
         spielListe.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){

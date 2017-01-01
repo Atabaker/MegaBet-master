@@ -156,23 +156,22 @@ public class WetteAbgebenActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle spielbundle = intent.getExtras();
 
-        String datum = spielbundle.getString(UserActivity.DATUM);
+   /*     String datum = spielbundle.getString(UserActivity.DATUM);
         String heim = spielbundle.getString(UserActivity.HEIM);
         String gast = spielbundle.getString(UserActivity.GAST);
-
+*/
         long spielID = spielbundle.getLong(UserActivity.KEY_SPIEL_ID);
+        String username = eingeloggertUser.getUsername();
         int tipp = loadWettausgang();
         double wettEinsatz = loadWettEinsatz();
 
 
 
-        Wette wette = new Wette(datum, wettEinsatz, heim, gast);
+        Wette wette = new Wette(spielID, username, tipp, wettEinsatz);
 
         dbHelper.createWette(wette);
 
-
-
-
+        /*
 
         Bundle wettbundle = new Bundle();
         wettbundle.putString(DATUM, wette.getDatum());
@@ -180,9 +179,10 @@ public class WetteAbgebenActivity extends AppCompatActivity {
         wettbundle.putString(HEIM, wette.getHeim());
         wettbundle.putString(GAST, wette.getGast());
 
-
+*/
         UserActivity activity = new UserActivity();
-        activity.loadWette(wettbundle);
+        activity.setUser_taler(wettEinsatz);
+        
 
         Intent intenti = new Intent(this, UserActivity.class);
 

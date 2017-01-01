@@ -120,7 +120,7 @@ public class MegaBetDBAdapter {
         dbHelper = new DatabaseHelper(ctx);
         database = dbHelper.getWritableDatabase();
 
-        //database.delete(TABLE_USER, null, null);
+       // database.delete(TABLE_WETTE, null, null);
         return this;
     }
 
@@ -152,6 +152,9 @@ public class MegaBetDBAdapter {
         iniValues.put(UHRZEIT, spiel.getUhrzeit());
         iniValues.put(DATUM, spiel.getDatum());
         iniValues.put(ERGEBNIS, spiel.getErgebnis());
+
+        dbHelper = new DatabaseHelper(ctx);
+        database = dbHelper.getWritableDatabase();
 
         return database.insert(TABLE_SPIEL, null, iniValues);
 
@@ -192,23 +195,26 @@ public class MegaBetDBAdapter {
        // String selectquery = "SELECT " + TABLE_SPIEL + "." + DATUM + ", " + TABLE_WETTE + "." + EINSATZ + ", "  + TABLE_SPIEL + "." + HEIM + ", " + TABLE_SPIEL + "." + GAST + " FROM " + TABLE_SPIEL + ", " + TABLE_WETTE + " WHERE " + TABLE_SPIEL + "." + KEY_SPIEL_ID + " = " + TABLE_WETTE + "." + KEY_SPIEL_ID+"";
 
 
-        //return database.query(TABLE_SPIEL, new String[] {KEY_SPIEL_ID, HEIM, GAST,
-        //       TORE_HEIM, TORE_GAST}, null, null,null, null, null);
 
-        return null;
+        return database.query(TABLE_SPIEL, new String[] {KEY_SPIEL_ID, HEIM, GAST,
+             TORE_HEIM, TORE_GAST, DATUM, UHRZEIT, ERGEBNIS}, null, null,null, null, null);
+
+
     }
 
     public Cursor fetchAllWetten(){
 
-        String squery = "CREATE VIEW xy AS SELECT spiel.datum, wette.einsatz, spiel.heim, spiel.gast FROM spiel, wette;";
+      //  String squery = "CREATE VIEW wetten_spiele AS SELECT spiel.datum, wette.einsatz, spiel.heim, spiel.gast FROM spiel, wette WHERE wette._spiel_id = spiel._spiel_id;";
 
-        database.execSQL(squery);
+       // database.execSQL(squery);
 
-        return database.query("xy", new String[] {DATUM, EINSATZ, HEIM,
+        return database.query("wetten_spiele", new String[] {DATUM, EINSATZ, HEIM,
                 GAST}, null, null,null, null, null);
+
+     //   return database.query(TABLE_WETTE, new String[] {KEY_WETTE_ID, KEY_SPIEL_ID, USERNAME, TIPP, EINSATZ }, null, null,null, null, null);
     }
 
-    public Cursor fetchSpieler(String spielID) throws SQLException {
+    public Cursor fetchSpiele(String spielID) throws SQLException {
 
         Cursor cursor = database.query(false, TABLE_SPIEL, new String[] {KEY_SPIEL_ID,
                         HEIM, GAST, TORE_HEIM, TORE_GAST, UHRZEIT, DATUM, ERGEBNIS}, KEY_SPIEL_ID + "=" + spielID, null,

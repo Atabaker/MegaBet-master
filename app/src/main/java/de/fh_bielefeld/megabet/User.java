@@ -44,8 +44,8 @@ public class User {
         return taler;
     }
 
-    public void setTaler(double taler) {
-        this.taler = taler;
+    public void setTaler(double talerUser) {
+        this.taler = taler - talerUser;
     }
 
     public String getAdmin() {
