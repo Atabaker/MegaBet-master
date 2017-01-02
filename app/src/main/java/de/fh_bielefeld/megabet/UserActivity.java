@@ -162,9 +162,9 @@ public class UserActivity extends AppCompatActivity {
         if(user_taler<=eingeloggterUser.getTaler()) {
             eingeloggterUser.setTaler(user_taler);
 
-           if(dbHelper.setTalerDB(eingeloggterUser) == true) {
+          // if(dbHelper.setTalerDB(eingeloggterUser) == true) {
                 return true;
-           }
+         //  }
 
 
 
