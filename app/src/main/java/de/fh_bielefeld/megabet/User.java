@@ -1,8 +1,5 @@
 package de.fh_bielefeld.megabet;
 
-/**
- * Created by Jessi on 30.11.2016.
- */
 
 public class User {
 
@@ -78,17 +75,5 @@ public class User {
         this.admin = admin;
         this.userID = userID;
     }
-/*
-    public User(String username, String passwort, Boolean aktiv, double taler, long userID) {
-        this.username = username;
-        this.passwort = passwort;sx,
-        this.aktiv = aktiv;
-        this.taler = taler;
-        this.admin = false;
-        this.userID = userID;
-    }
-*/
-    public User () {
 
-    }
 }

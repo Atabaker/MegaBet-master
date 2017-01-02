@@ -1,8 +1,6 @@
 package de.fh_bielefeld.megabet;
 
-/**
- * Created by Jessi on 30.11.2016.
- */
+
 
 public class Wette {
     // Tabellenspalten Tabelle Wette
@@ -95,14 +93,6 @@ public class Wette {
     }
 
     //Konstruktor Wette
-    public Wette(long spielID, long wettID, String username, int tipp, double einsatz, double wettgewinn) {
-        this.spielID = spielID;
-        this.wettID = wettID;
-        this.username = username;
-        this.tipp = tipp;
-        this.einsatz = einsatz;
-        this.wettgewinn = wettgewinn;
-    }
 
     public Wette(long spielID, String username, int tipp, double einsatz) {
         this.spielID = spielID;

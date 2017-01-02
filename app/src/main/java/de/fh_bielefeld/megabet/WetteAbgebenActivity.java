@@ -24,9 +24,9 @@ import static de.fh_bielefeld.megabet.R.id.wette_radioButtonHeim;
 
 public class WetteAbgebenActivity extends AppCompatActivity {
 
-    static User eingeloggertUser;
+    static User eingeloggterUser;
 
-    String user_taler = Double.toString(LoginActivity.getEingeloggertUser().getTaler());
+    String user_taler = Double.toString(LoginActivity.getEingeloggterUser().getTaler());
 
     private TextView textViewUser;
     private TextView textViewTaler;
@@ -58,7 +58,8 @@ public class WetteAbgebenActivity extends AppCompatActivity {
 
         dbHelper = new MegaBetDBAdapter(this);
 
-        eingeloggertUser = LoginActivity.getEingeloggertUser();
+        eingeloggterUser = LoginActivity.getEingeloggterUser();
+
         loadData();
 
 
@@ -134,7 +135,7 @@ public class WetteAbgebenActivity extends AppCompatActivity {
         textViewGast.setText(gast);
 
 
-        textViewUser.setText(LoginActivity.getEingeloggertUser().getUsername());
+        textViewUser.setText(LoginActivity.getEingeloggterUser().getUsername());
         textViewTaler.setText(user_taler);
         //set text
     }
@@ -146,9 +147,6 @@ public class WetteAbgebenActivity extends AppCompatActivity {
         Intent intent = new Intent(this, UserActivity.class);
         startActivity(intent);
 
-
-
-
     }
 
     public void onClickWetteAbgeben(View view){
@@ -156,20 +154,15 @@ public class WetteAbgebenActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle spielbundle = intent.getExtras();
 
-   /*     String datum = spielbundle.getString(UserActivity.DATUM);
-        String heim = spielbundle.getString(UserActivity.HEIM);
-        String gast = spielbundle.getString(UserActivity.GAST);
-*/
         long spielID = spielbundle.getLong(UserActivity.KEY_SPIEL_ID);
-        String username = eingeloggertUser.getUsername();
+        String username = eingeloggterUser.getUsername();
         int tipp = loadWettausgang();
         double wettEinsatz = loadWettEinsatz();
-
-
 
         Wette wette = new Wette(spielID, username, tipp, wettEinsatz);
 
         UserActivity activity = new UserActivity();
+
         if(activity.setUser_taler(wettEinsatz) == true) {
 
 
@@ -177,7 +170,7 @@ public class WetteAbgebenActivity extends AppCompatActivity {
 
         }
         else{
-            Toast.makeText(getApplicationContext(), "Gesetzte Taler höher als Talerbestand!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Wette konnte nicht gesetzt werden, da Talerbestand zu niedrig!", Toast.LENGTH_LONG).show();
         }
 
 
@@ -191,17 +184,4 @@ public class WetteAbgebenActivity extends AppCompatActivity {
 
     }
 
-
- /*   @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-    }
-*/
 }

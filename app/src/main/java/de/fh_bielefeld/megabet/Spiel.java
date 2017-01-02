@@ -92,7 +92,7 @@ public class Spiel {
         this.ergebnis = ergebnis;
     }
 
-//  gibt als String zurück: Heimmannschaft + Gastmannschaft + Gasttore + Heimtore + Zeit + Datum + Ergebnis
+
     public String toString() {
         return datum +  " " + heim + " - " + gast;
 

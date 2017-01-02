@@ -46,15 +46,9 @@ public class UserActivity extends AppCompatActivity {
     public static final String UHRZEIT = "uhrzeit";
     public static final String ERGEBNIS = "ergebnis";
 
-    public static final String KEY_WETTE_ID = "_wettID";
-    public static final String KEY_USERNAME = "username";
-    public static final String TIPP = "tipp";
-    public static final String EINSATZ = "einsatz";
-    public static final String WETTGEWINN = "wettgewinn";
+    private User eingeloggterUser;
 
-    private User eingeloggertUser;
-
-    String user_taler = Double.toString(LoginActivity.getEingeloggertUser().getTaler());
+    String user_taler = Double.toString(LoginActivity.getEingeloggterUser().getTaler());
 
     private TextView textViewUser;
     private TextView textViewTaler;
@@ -66,22 +60,16 @@ public class UserActivity extends AppCompatActivity {
 
         dbHelper = new MegaBetDBAdapter(this);
 
-        eingeloggertUser = LoginActivity.getEingeloggertUser();
+        eingeloggterUser = LoginActivity.getEingeloggterUser();
 
 
         loadData();
 
-      // loadSpiel();
-
-        //loadWette();
+        loadSpiel();
 
         fillDataSpiel();
 
         fillDataWette();
-
-
-
-
 
         createTableViewSpiel();
 
@@ -95,7 +83,7 @@ public class UserActivity extends AppCompatActivity {
 
 
 
-        textViewUser.setText(LoginActivity.getEingeloggertUser().getUsername());
+        textViewUser.setText(LoginActivity.getEingeloggterUser().getUsername());
         textViewTaler.setText(user_taler);
         //set text
     }
@@ -153,28 +141,35 @@ public class UserActivity extends AppCompatActivity {
         Spiel spiel3 = new Spiel("RB Leipzig", "Vfl Stuttgart" , 0, 0, "18:00", "21.01.17", 0, 3);
         Spiel spiel4 = new Spiel("Werder Bremen", "Hamburg SV" , 0, 0, "18:00", "27.01.17", 0, 4);
 
-        dbHelper.createSpiel(spiel1);
-        dbHelper.createSpiel(spiel2);
-        dbHelper.createSpiel(spiel3);
-        dbHelper.createSpiel(spiel4);
 
+        dbHelper.open();
+
+        Cursor cursor = dbHelper.fetchAllSpiele();
+        if(cursor.getCount() == 0) {
+            dbHelper.createSpiel(spiel1);
+            dbHelper.createSpiel(spiel2);
+            dbHelper.createSpiel(spiel3);
+            dbHelper.createSpiel(spiel4);
+        }
 
     }
 
-    public String getUser_taler(){
-
-        return user_taler;
-    }
 
     public boolean setUser_taler(double user_taler){
 
 
-        eingeloggertUser = LoginActivity.getEingeloggertUser();
-        if(user_taler<=eingeloggertUser.getTaler()) {
-            eingeloggertUser.setTaler(user_taler);
-            return true;
+        eingeloggterUser = LoginActivity.getEingeloggterUser();
+        if(user_taler<=eingeloggterUser.getTaler()) {
+            eingeloggterUser.setTaler(user_taler);
+
+           if(dbHelper.setTalerDB(eingeloggterUser) == true) {
+                return true;
+           }
+
+
+
         }
-        else return false;
+        return false;
     }
 
 

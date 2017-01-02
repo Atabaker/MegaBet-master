@@ -24,17 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private MegaBetDBAdapter dbHelper;
 
-    public final static String USERNAME = "username";
-    public final static String PASSWORT = "password";
-    public static final String AKTIV = "aktiv";
-    public static final String TALER = "taler";
-    public static final String ADMIN = "admin";
-
-    public static User getEingeloggertUser() {
-        return eingeloggertUser;
-    }
-
-    static User eingeloggertUser;
+    static User eingeloggterUser;
 
 
 
@@ -45,11 +35,15 @@ public class LoginActivity extends AppCompatActivity {
 
         dbHelper = new MegaBetDBAdapter(this);
 
-        fillData();
-
         loadUser();
 
+        fillData();
+
         createTableView();
+    }
+
+    public static User getEingeloggterUser() {
+        return eingeloggterUser;
     }
 
 
@@ -74,8 +68,6 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
-
-
         dbHelper.close();
     }
 
@@ -87,16 +79,16 @@ public class LoginActivity extends AppCompatActivity {
         User user3 = new User("sbrokmeier@fh-bielefeld.de" ,"samsung", "true", 80, "true", 3);
         User user4 = new User("jkleemann@fh-bielefeld.de" ,"lg", "true", 84, "false", 4);
 
-    /*  dbHelper.createUser(user1);
-        dbHelper.createUser(user2);
-        dbHelper.createUser(user3);
-        dbHelper.createUser(user4);
+        dbHelper.open();
 
-    */  user.add(user1);
-        user.add(user2);
-        user.add(user3);
-        user.add(user4);
+        Cursor cursor = dbHelper.fetchAllUser();
+        if(cursor.getCount() == 0) {
 
+            dbHelper.createUser(user1);
+            dbHelper.createUser(user2);
+            dbHelper.createUser(user3);
+            dbHelper.createUser(user4);
+        }
 
     }
 
@@ -112,13 +104,16 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 
-                eingeloggertUser = user.get(position);
-                if(user.get(position).getAdmin() == "false") {
+                eingeloggterUser = user.get(position);
+
+
+                   if(user.get(position).getAdmin().equals("false")){
+
                     Intent intent = new Intent(context, UserActivity.class);
 
                     startActivityForResult(intent, 0);
 
-                }else if(user.get(position).getAdmin() == "true") {
+                }else if (user.get(position).getAdmin().equals("true")){
                     Intent intent = new Intent(context, AdminActivity.class);
 
                     startActivityForResult(intent, 0);

@@ -11,9 +11,7 @@ package de.fh_bielefeld.megabet;
 // Add requires variables like database name, database version, column names.
 // Executed TABLE CREATE statements in onCreate() method.
 
-/**
- * Created by Jessi on 29.11.201 6.
- */
+
 
 //import info.androidhive.sqlite.helper;
 
@@ -41,7 +39,7 @@ public class MegaBetDBAdapter {
     private static final String TABLE_USER = "user";
     private static final String TABLE_SPIEL = "spiel";
     private static final String TABLE_WETTE = "wette";
-    private static final String WETTE_SPIEL = "wette_spiel";
+    private static final String TABLE_GEWETTETESPIELE = "gewettetespiele";
 
     // Variables TABLE login / column names
     public static final String KEY_USER_ID = "_userID";
@@ -57,7 +55,7 @@ public class MegaBetDBAdapter {
             USERNAME + " Text Not Null," +
             PASSWORT + " Text Not Null, " +
             AKTIV + " Text Not Null, " +
-            TALER + " Integer Not Null, " +
+            TALER + " Double Not Null, " +
             ADMIN + " Text Not Null);";
 
     // Variables TABLE Spiel / column names
@@ -103,6 +101,7 @@ public class MegaBetDBAdapter {
             WETTGEWINN + " DOUBLE Not Null, " +
             "FOREIGN KEY("+ KEY_SPIEL_ID +") REFERENCES " + TABLE_SPIEL + "("+KEY_SPIEL_ID+"));";
 
+    private static final String SQL_CREATE_GEWETTETESPIELE = "CREATE VIEW IF NOT EXISTS gewettetespiele AS SELECT spiel.datum, wette.einsatz, spiel.heim, spiel.gast, wette.tipp FROM spiel, wette WHERE wette._spiel_id = spiel._spiel_id;";
 
 
 
@@ -121,8 +120,12 @@ public class MegaBetDBAdapter {
         database = dbHelper.getWritableDatabase();
 
 
-        //database.delete(TABLE_SPIEL, null, null);
-       // database.delete(TABLE_WETTE, null, null);
+       // database.delete(TABLE_SPIEL, null, null);
+        // database.delete(TABLE_WETTE, null, null);
+        //database.delete(TABLE_USER, null, null);
+        //DROP_GEWETTESPIELE();
+        //£database.delete(TABLE_GEWETTETESPIELE, null, null);
+
         return this;
     }
 
@@ -182,43 +185,31 @@ public class MegaBetDBAdapter {
 
     public Cursor fetchAllSpiele(){
 
-   /*     String SQL_CREATE_GEWETTET = "CREATE VIEW wette_spiel_ as SELECT spiel.datum, wette.einsatz, spiel.heim, spiel.gast " +
-                "FROM wette, spiel " +
-                "WHERE spiel._spiel_id = wette._spiel_id;";
-
-        database.execSQL(SQL_CREATE_GEWETTET);
-
-        String squery = "SELECT * FROM wette_spiel";
-
-        return database.query(WETTE_SPIEL,new String [] {DATUM, EINSATZ, HEIM, GAST}, null, null, null, null, null);
-*/
-        //String squery = "select spiel.datum, wette.einsatz, spiel.heim, spiel.gast from wette, spiel where spiel._spiel_id = wette._spiel_id;";
-
-       // String selectquery = "SELECT " + TABLE_SPIEL + "." + DATUM + ", " + TABLE_WETTE + "." + EINSATZ + ", "  + TABLE_SPIEL + "." + HEIM + ", " + TABLE_SPIEL + "." + GAST + " FROM " + TABLE_SPIEL + ", " + TABLE_WETTE + " WHERE " + TABLE_SPIEL + "." + KEY_SPIEL_ID + " = " + TABLE_WETTE + "." + KEY_SPIEL_ID+"";
-
-
 
         return database.query(TABLE_SPIEL, new String[] {KEY_SPIEL_ID, HEIM, GAST,
              TORE_HEIM, TORE_GAST, DATUM, UHRZEIT, ERGEBNIS}, null, null,null, null, null);
-
-
     }
 
     public Cursor fetchAllWetten(){
 
-        User eingeloggterUser = LoginActivity.getEingeloggertUser();
-        String squery = "CREATE VIEW gewettetespiele AS SELECT spiel.datum, wette.einsatz, spiel.heim, spiel.gast, wette.tipp FROM spiel, wette WHERE wette._spiel_id = spiel._spiel_id AND wette.username = '" + eingeloggterUser.getUsername()+ "';";
 
-     //   database.execSQL(squery);
+        CREATE_GEWETTETESPIELE();
 
-    //   String sqldrop = "DROP VIEW gewettetespiele;";
-    //   database.execSQL(sqldrop);
-
-
-
-        return database.query(true,"gewettetespiele",new String[] {DATUM, EINSATZ, HEIM,
+        return database.query(true,TABLE_GEWETTETESPIELE,new String[] {DATUM, EINSATZ, HEIM,
                 GAST, TIPP},null,null,null,null,null,null);
 
+    }
+
+    public void CREATE_GEWETTETESPIELE(){
+
+        database.execSQL(SQL_CREATE_GEWETTETESPIELE);
+
+    }
+
+    public void DROP_GEWETTESPIELE(){
+
+        String sqldrop = "DROP VIEW gewettetespiele;";
+        database.execSQL(sqldrop);
     }
 
     public Cursor fetchSpiele(String spielID) throws SQLException {
@@ -245,8 +236,6 @@ public class MegaBetDBAdapter {
 
     public Cursor fetchWette(String wettID) throws SQLException {
 
-
-
            Cursor cursor = database.query(true, TABLE_WETTE, new String[] {KEY_WETTE_ID,
                         KEY_SPIEL_ID, USERNAME, TIPP, EINSATZ, WETTGEWINN}, KEY_SPIEL_ID + "=" + wettID, null,
                 null, null, null, null);
@@ -257,29 +246,35 @@ public class MegaBetDBAdapter {
         return cursor;
     }
 
-    public void setTalerDB(){
 
+    public boolean setTalerDB(User eingeloggterUser){
+
+        ContentValues iniVaulues = new ContentValues();
+        iniVaulues.put(TALER, eingeloggterUser.getTaler());
+        return database.update(TABLE_USER,iniVaulues, KEY_USER_ID + " = " + eingeloggterUser.getUserID(), null) > 0;
 
     }
 
 
+
     public class DatabaseHelper extends SQLiteOpenHelper {
+
+
         DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
-          //  Log.d(LOG_TAG, "DB-Helper hat die Datenbank: " + getDatabaseName() + " erzeugt.");
+            Log.d(LOG_TAG, "DB-Helper hat die Datenbank: " + getDatabaseName() + " erzeugt.");
         }
 
         @Override
         public void onCreate(SQLiteDatabase database) {
 
-           // String SQL_DELETE_TABLE_USER = "DROP TABLE "+getDatabaseName()+ "." + TABLE_USER +";";
-          //  database.execSQL(SQL_DELETE_TABLE_USER);
-
-
             database.execSQL(SQL_CREATE_USER);
             database.execSQL(SQL_CREATE_SPIEL);
             database.execSQL(SQL_CREATE_WETTE);
+
+
         }
+
 
         @Override
         public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
