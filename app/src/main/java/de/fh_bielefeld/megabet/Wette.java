@@ -112,19 +112,33 @@ public class Wette {
         wettgewinn = 0;
     }
 
-   public Wette(String datum, double einsatz, String heim, String gast) {
+   public Wette(String datum, double einsatz, String heim, String gast, int tipp) {
 
         this.datum = datum;
         this.einsatz = einsatz;
         this.heim = heim;
         this.gast = gast;
+        this.tipp = tipp;
 
     }
 
 
     public String toString() {
-     //   return   spielID + " - " + username + " - " + tipp + " - " + einsatz;
 
-        return datum + " | " + heim + " - " + gast + " | " + einsatz + "T";
+        String tip;
+        if(tipp == 1){
+            tip = "Heimsieg";
+            return datum + " | " + heim + " - " + gast + " | " + einsatz + "T | " +tip;
+        }
+        if(tipp == 2){
+            tip = "Gastsieg";
+            return datum + " | " + heim + " - " + gast + " | " + einsatz + "T | " +tip;
+        }
+        if(tipp == 3){
+            tip = "Unentschieden";
+            return datum + " | " + heim + " - " + gast + " | " + einsatz + "T | " +tip;
+        }
+
+        return datum + " | " + heim + " - " + gast + " | " + einsatz + "T | " +tipp;
     }
 }

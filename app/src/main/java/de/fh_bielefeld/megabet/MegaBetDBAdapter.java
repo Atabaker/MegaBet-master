@@ -120,6 +120,8 @@ public class MegaBetDBAdapter {
         dbHelper = new DatabaseHelper(ctx);
         database = dbHelper.getWritableDatabase();
 
+
+        //database.delete(TABLE_SPIEL, null, null);
        // database.delete(TABLE_WETTE, null, null);
         return this;
     }
@@ -204,14 +206,19 @@ public class MegaBetDBAdapter {
 
     public Cursor fetchAllWetten(){
 
-      //  String squery = "CREATE VIEW wetten_spiele AS SELECT spiel.datum, wette.einsatz, spiel.heim, spiel.gast FROM spiel, wette WHERE wette._spiel_id = spiel._spiel_id;";
+        User eingeloggterUser = LoginActivity.getEingeloggertUser();
+        String squery = "CREATE VIEW gewettetespiele AS SELECT spiel.datum, wette.einsatz, spiel.heim, spiel.gast, wette.tipp FROM spiel, wette WHERE wette._spiel_id = spiel._spiel_id AND wette.username = '" + eingeloggterUser.getUsername()+ "';";
 
-       // database.execSQL(squery);
+     //   database.execSQL(squery);
 
-        return database.query("wetten_spiele", new String[] {DATUM, EINSATZ, HEIM,
-                GAST}, null, null,null, null, null);
+    //   String sqldrop = "DROP VIEW gewettetespiele;";
+    //   database.execSQL(sqldrop);
 
-     //   return database.query(TABLE_WETTE, new String[] {KEY_WETTE_ID, KEY_SPIEL_ID, USERNAME, TIPP, EINSATZ }, null, null,null, null, null);
+
+
+        return database.query(true,"gewettetespiele",new String[] {DATUM, EINSATZ, HEIM,
+                GAST, TIPP},null,null,null,null,null,null);
+
     }
 
     public Cursor fetchSpiele(String spielID) throws SQLException {
@@ -250,11 +257,16 @@ public class MegaBetDBAdapter {
         return cursor;
     }
 
+    public void setTalerDB(){
+
+
+    }
+
 
     public class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
-            Log.d(LOG_TAG, "DB-Helper hat die Datenbank: " + getDatabaseName() + " erzeugt.");
+          //  Log.d(LOG_TAG, "DB-Helper hat die Datenbank: " + getDatabaseName() + " erzeugt.");
         }
 
         @Override

@@ -71,7 +71,9 @@ public class UserActivity extends AppCompatActivity {
 
         loadData();
 
-      //  loadSpiel();
+      // loadSpiel();
+
+        //loadWette();
 
         fillDataSpiel();
 
@@ -79,7 +81,7 @@ public class UserActivity extends AppCompatActivity {
 
 
 
-      //  loadWette();
+
 
         createTableViewSpiel();
 
@@ -110,9 +112,10 @@ public class UserActivity extends AppCompatActivity {
             double einsatz = cursor.getDouble(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.EINSATZ));
             String heim = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.HEIM));
             String gast = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.GAST));
+            int tipp = cursor.getInt(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.TIPP));
 
 
-            wette.add(new Wette(datum, einsatz, heim, gast));
+            wette.add(new Wette(datum, einsatz, heim, gast, tipp));
             cursor.moveToNext();
         }
         dbHelper.close();
@@ -163,10 +166,15 @@ public class UserActivity extends AppCompatActivity {
         return user_taler;
     }
 
-    public void setUser_taler(double user_taler){
+    public boolean setUser_taler(double user_taler){
+
 
         eingeloggertUser = LoginActivity.getEingeloggertUser();
-        eingeloggertUser.setTaler(user_taler);
+        if(user_taler<=eingeloggertUser.getTaler()) {
+            eingeloggertUser.setTaler(user_taler);
+            return true;
+        }
+        else return false;
     }
 
 

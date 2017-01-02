@@ -96,7 +96,7 @@ tools:context="de.fh_bielefeld.megabet.SpielHinzufuegenActivity">
         android:inputType="text"
         android:text="Ergebnis"
         android:ems="10"
-        android:id="@+id/gastTextfield" />
+        android:id="@+id/gastTextfield_" />
 
 
     <RadioButton

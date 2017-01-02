@@ -169,20 +169,17 @@ public class WetteAbgebenActivity extends AppCompatActivity {
 
         Wette wette = new Wette(spielID, username, tipp, wettEinsatz);
 
-        dbHelper.createWette(wette);
-
-        /*
-
-        Bundle wettbundle = new Bundle();
-        wettbundle.putString(DATUM, wette.getDatum());
-        wettbundle.putDouble(EINSATZ, wette.getEinsatz());
-        wettbundle.putString(HEIM, wette.getHeim());
-        wettbundle.putString(GAST, wette.getGast());
-
-*/
         UserActivity activity = new UserActivity();
-        activity.setUser_taler(wettEinsatz);
-        
+        if(activity.setUser_taler(wettEinsatz) == true) {
+
+
+            dbHelper.createWette(wette);
+
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Gesetzte Taler höher als Talerbestand!", Toast.LENGTH_LONG).show();
+        }
+
 
         Intent intenti = new Intent(this, UserActivity.class);
 
