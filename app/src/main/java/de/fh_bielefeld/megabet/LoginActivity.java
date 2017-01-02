@@ -27,7 +27,6 @@ public class LoginActivity extends AppCompatActivity {
     static User eingeloggterUser;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +45,11 @@ public class LoginActivity extends AppCompatActivity {
         return eingeloggterUser;
     }
 
+    /*
+    In der Methode fillData() wird mit Hilfe des dbHelper und der fetchAllUser()-Methode alle
+    User aus der TABLE_USER ausgelesen und dem cursor übergeben und anschließend in User-Objekte
+    umgewandelt. Danach werden die User-Objekte in der Array-List<User> abgelegt.
+    */
 
     public void fillData() {
 
@@ -55,15 +59,16 @@ public class LoginActivity extends AppCompatActivity {
         Cursor cursor = dbHelper.fetchAllUser();
 
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()) {
-            long userID = cursor.getLong(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.KEY_USER_ID));
+        while (!cursor.isAfterLast()) {
+
             String username = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.USERNAME));
             String passwort = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.PASSWORT));
             String aktiv = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.AKTIV));
             double taler = cursor.getDouble(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.TALER));
             String admin = cursor.getString(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.ADMIN));
+            long userID = cursor.getLong(cursor.getColumnIndexOrThrow(MegaBetDBAdapter.KEY_USER_ID));
 
-            user.add(new User(username,passwort, aktiv, taler, admin, userID));
+            user.add(new User(username, passwort, aktiv, taler, admin, userID));
             cursor.moveToNext();
 
         }
@@ -71,18 +76,25 @@ public class LoginActivity extends AppCompatActivity {
         dbHelper.close();
     }
 
+    /* In der loadUser()-Methode werden 4 User-Testobjekte erzeugt –da zur Zeit noch kein
+    Zugriff auf die Benutzerverwaltung der MEGABET-APP besteht.
+    Daraufhin wird überprüft, ob die User_Testobjekte schon in der Datenbank angelegt
+    worden sind (Cursor cursor = dbHelper.fetchAllUser();), bestehen keine Datensätze
+    in der TABLE_USER werden die Testobjekte mit Hilfe der createUser()-Methode in die Datenbank
+    geschrieben.
+    */
 
-    public void loadUser(){
+    public void loadUser() {
 
-        User user1 = new User("afoerster@fh-bielefeld.de" ,"apple", "true", 100, "true", 1);
-        User user2 = new User("asediqi@fh-bielefeld.de" ,"htc", "true", 77, "false", 2);
-        User user3 = new User("sbrokmeier@fh-bielefeld.de" ,"samsung", "true", 80, "true", 3);
-        User user4 = new User("jkleemann@fh-bielefeld.de" ,"lg", "true", 84, "false", 4);
+        User user1 = new User("afoerster@fh-bielefeld.de", "apple", "true", 100, "true", 1);
+        User user2 = new User("asediqi@fh-bielefeld.de", "htc", "true", 77, "false", 2);
+        User user3 = new User("sbrokmeier@fh-bielefeld.de", "samsung", "true", 80, "true", 3);
+        User user4 = new User("jkleemann@fh-bielefeld.de", "lg", "true", 84, "false", 4);
 
         dbHelper.open();
 
         Cursor cursor = dbHelper.fetchAllUser();
-        if(cursor.getCount() == 0) {
+        if (cursor.getCount() == 0) {
 
             dbHelper.createUser(user1);
             dbHelper.createUser(user2);
@@ -92,36 +104,33 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /*
 
-    public void createTableView(){
+     */
+    public void createTableView() {
 
         final ListView userListe = (ListView) findViewById(R.id.login_ListViewUser);
         adapter = new ArrayAdapter<User>(this, android.R.layout.simple_expandable_list_item_1, user);
         userListe.setAdapter(adapter);
 
-        userListe.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        userListe.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 eingeloggterUser = user.get(position);
 
-
-                   if(user.get(position).getAdmin().equals("false")){
+                if (user.get(position).getAdmin().equals("false")) {
 
                     Intent intent = new Intent(context, UserActivity.class);
 
                     startActivityForResult(intent, 0);
 
-                }else if (user.get(position).getAdmin().equals("true")){
+                } else if (user.get(position).getAdmin().equals("true")) {
                     Intent intent = new Intent(context, AdminActivity.class);
 
                     startActivityForResult(intent, 0);
                 }
-
-
-
-
             }
         });
 

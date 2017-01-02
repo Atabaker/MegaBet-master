@@ -41,6 +41,7 @@ public class User {
         return taler;
     }
 
+    // In der setTaler() wird der Talerbestend gesetzt.
     public void setTaler(double talerUser) {
         this.taler = taler - talerUser;
     }
@@ -63,7 +64,6 @@ public class User {
 
     public String toString(){
         return username;
-
     }
 
 // Konstruktor für die Tabelle Login

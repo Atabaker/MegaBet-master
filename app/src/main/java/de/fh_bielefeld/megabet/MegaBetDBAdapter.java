@@ -4,16 +4,10 @@ package de.fh_bielefeld.megabet;
 // DatabaseHelper contains all the methods to perform database operations like opening connection,
 // closing connection, insert, update, read, delete and other things.
 // As this class is helper class, place this under helper package.
-
 // Create a Class named MegaBetDBAdapter.java and extends the class from SQLiteOpenHelper.
 // public class MegaBetDBAdapter extends SQLiteOpenHelper{
-
 // Add requires variables like database name, database version, column names.
 // Executed TABLE CREATE statements in onCreate() method.
-
-
-
-//import info.androidhive.sqlite.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -99,42 +93,60 @@ public class MegaBetDBAdapter {
             TIPP + " INTEGER Not Null, " +
             EINSATZ + " Double Not Null, " +
             WETTGEWINN + " DOUBLE Not Null, " +
-            "FOREIGN KEY("+ KEY_SPIEL_ID +") REFERENCES " + TABLE_SPIEL + "("+KEY_SPIEL_ID+"));";
+            "FOREIGN KEY(" + KEY_SPIEL_ID + ") REFERENCES " + TABLE_SPIEL + "(" + KEY_SPIEL_ID + "));";
 
-    private static final String SQL_CREATE_GEWETTETESPIELE = "CREATE VIEW IF NOT EXISTS gewettetespiele AS SELECT spiel.datum, wette.einsatz, spiel.heim, spiel.gast, wette.tipp FROM spiel, wette WHERE wette._spiel_id = spiel._spiel_id;";
+    /*
+     SQL-Befehl um eine View aus zwei Tabellen (TABLE_SPIEL und TABLE_WETTE) zu erstellen.
+     Die Spalten werden in der SELECT_Anweisung definiert und die Tabellen werden über den PK/FK
+     spiel_id miteinander verknüpft. Dies geschieht nur, wenn die View<gewetteteSpiele> noch nicht
+     in der Datenbank existiert.
+     */
 
+    private static final String SQL_CREATE_GEWETTETESPIELE =
+            "CREATE VIEW IF NOT EXISTS gewettetespiele AS SELECT spiel.datum, wette.einsatz, " +
+                    "spiel.heim, spiel.gast, wette.tipp FROM spiel, wette " +
+                    "WHERE wette._spiel_id = spiel._spiel_id;";
 
 
     private final Context ctx;
 
-    public MegaBetDBAdapter(Context ctx){
-
+    public MegaBetDBAdapter(Context ctx) {
         this.ctx = ctx;
     }
 
-    public MegaBetDBAdapter open() throws SQLException{
+    /*
+    Erzeugt eine Lesbare und Beschreibbare Datenbank durch zur Hilfenahme des dbHelper.
+    Durch einkommentieren der auskommentierten database.delete-Anweisungen können bereits
+    angelegte Tabellen wieder gelöscht werden.
+     */
 
-
+    public MegaBetDBAdapter open() throws SQLException {
 
         dbHelper = new DatabaseHelper(ctx);
         database = dbHelper.getWritableDatabase();
 
-
-       // database.delete(TABLE_SPIEL, null, null);
+        // database.delete(TABLE_SPIEL, null, null);
         // database.delete(TABLE_WETTE, null, null);
-        //database.delete(TABLE_USER, null, null);
-        //DROP_GEWETTESPIELE();
-        //£database.delete(TABLE_GEWETTETESPIELE, null, null);
+        // database.delete(TABLE_USER, null, null);
+        // DROP_GEWETTESPIELE();
+        // database.delete(TABLE_GEWETTETESPIELE, null, null);
 
         return this;
     }
 
-    public void close(){
-
+    /*
+    Schließt den dbHelper.
+     */
+    public void close() {
         dbHelper.close();
     }
 
-    public long createUser(User user){
+    /*
+    In den drei create-Methoden -createUser(), createSpiel(),createWette()- werden die
+    Objekte -user, spiel, wette- übergeben. Diese Attribute werden herausgelesen und dem
+    ContentValue hinzugefügt und anschließend in die Datenbank geschrieben.
+     */
+    public long createUser(User user) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(USERNAME, user.getUsername());
         initialValues.put(PASSWORT, user.getPasswort());
@@ -145,10 +157,10 @@ public class MegaBetDBAdapter {
         dbHelper = new DatabaseHelper(ctx);
         database = dbHelper.getWritableDatabase();
 
-        return database.insert(TABLE_USER,null,initialValues);
+        return database.insert(TABLE_USER, null, initialValues);
     }
 
-    public long createSpiel(Spiel spiel){
+    public long createSpiel(Spiel spiel) {
         ContentValues iniValues = new ContentValues();
         iniValues.put(HEIM, spiel.getHeim());
         iniValues.put(GAST, spiel.getGast());
@@ -162,10 +174,9 @@ public class MegaBetDBAdapter {
         database = dbHelper.getWritableDatabase();
 
         return database.insert(TABLE_SPIEL, null, iniValues);
-
     }
 
-    public long createWette(Wette wette){
+    public long createWette(Wette wette) {
         ContentValues iniVaulues = new ContentValues();
         iniVaulues.put(KEY_SPIEL_ID, wette.getSpielID());
         iniVaulues.put(USERNAME, wette.getUsername());
@@ -178,43 +189,50 @@ public class MegaBetDBAdapter {
         return database.insert(TABLE_WETTE, null, iniVaulues);
     }
 
+    /*
+    In den 3 fetch-Methoden -fetchAllUser(), fetchAllSpiele(), fetchAllWetten- wird mit Hilfe des
+    Datenbank query-Befehl die jeweiligen Datensätze aus den Tabellen ausgelesen und dem Cursor
+    übergeben. Der Cursor wird anschließend zurückgegeben.
+     */
     public Cursor fetchAllUser() {
-        return database.query(TABLE_USER, new String[] {KEY_USER_ID, USERNAME,
+        return database.query(TABLE_USER, new String[]{KEY_USER_ID, USERNAME,
                 PASSWORT, AKTIV, TALER, ADMIN}, null, null, null, null, null);
     }
 
-    public Cursor fetchAllSpiele(){
-
-
-        return database.query(TABLE_SPIEL, new String[] {KEY_SPIEL_ID, HEIM, GAST,
-             TORE_HEIM, TORE_GAST, DATUM, UHRZEIT, ERGEBNIS}, null, null,null, null, null);
+    public Cursor fetchAllSpiele() {
+        return database.query(TABLE_SPIEL, new String[]{KEY_SPIEL_ID, HEIM, GAST,
+                TORE_HEIM, TORE_GAST, DATUM, UHRZEIT, ERGEBNIS}, null, null, null, null, null);
     }
 
-    public Cursor fetchAllWetten(){
-
-
+    public Cursor fetchAllWetten() {
         CREATE_GEWETTETESPIELE();
-
-        return database.query(true,TABLE_GEWETTETESPIELE,new String[] {DATUM, EINSATZ, HEIM,
-                GAST, TIPP},null,null,null,null,null,null);
+        return database.query(true, TABLE_GEWETTETESPIELE, new String[]{DATUM, EINSATZ, HEIM,
+                GAST, TIPP}, null, null, null, null, null, null);
 
     }
 
-    public void CREATE_GEWETTETESPIELE(){
+    /*
+    Erzeugung der View durch execSQL-Anweisung.
+     */
 
+    public void CREATE_GEWETTETESPIELE() {
         database.execSQL(SQL_CREATE_GEWETTETESPIELE);
-
     }
 
-    public void DROP_GEWETTESPIELE(){
-
+    /*
+    Löschen der View
+     */
+    public void DROP_GEWETTESPIELE() {
         String sqldrop = "DROP VIEW gewettetespiele;";
         database.execSQL(sqldrop);
     }
 
+    /*
+    In den drei folgenden fetch()-Methode, werden mit Hilfe des Cursor, alle Attribute, über die
+    übergebene _id ausgelesen und dem Cursor zurückgegeben.
+     */
     public Cursor fetchSpiele(String spielID) throws SQLException {
-
-        Cursor cursor = database.query(false, TABLE_SPIEL, new String[] {KEY_SPIEL_ID,
+        Cursor cursor = database.query(false, TABLE_SPIEL, new String[]{KEY_SPIEL_ID,
                         HEIM, GAST, TORE_HEIM, TORE_GAST, UHRZEIT, DATUM, ERGEBNIS}, KEY_SPIEL_ID + "=" + spielID, null,
                 null, null, null, null);
         if (cursor != null) {
@@ -225,7 +243,7 @@ public class MegaBetDBAdapter {
 
     public Cursor fetchUser(String userID) throws SQLException {
 
-        Cursor cursor = database.query(false, TABLE_USER, new String[] {KEY_USER_ID,
+        Cursor cursor = database.query(false, TABLE_USER, new String[]{KEY_USER_ID,
                         USERNAME, PASSWORT, AKTIV, TALER}, KEY_USER_ID + "=" + userID, null,
                 null, null, null, null);
         if (cursor != null) {
@@ -236,29 +254,33 @@ public class MegaBetDBAdapter {
 
     public Cursor fetchWette(String wettID) throws SQLException {
 
-           Cursor cursor = database.query(true, TABLE_WETTE, new String[] {KEY_WETTE_ID,
-                        KEY_SPIEL_ID, USERNAME, TIPP, EINSATZ, WETTGEWINN}, KEY_SPIEL_ID + "=" + wettID, null,
-                null, null, null, null);
-
+        Cursor cursor = database.query(true, TABLE_WETTE, new String[]{KEY_WETTE_ID,
+                        KEY_SPIEL_ID, USERNAME, TIPP, EINSATZ, WETTGEWINN},
+                            KEY_SPIEL_ID + "=" + wettID, null, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
         return cursor;
     }
-
-
-    public boolean setTalerDB(User eingeloggterUser){
-
+    /*
+    Der Talerbestand, des übergeben Users, wird hier ausgelesen und der entsprechende Datenbanksatz
+    aktualisiert mit den ausgelesenen Talerbestand.
+    Hierbei kommt es zu Problemen bei der Anwendung. Es wird eine NullPointerException geworfen,
+    die derzeit noch nicht behoben werden konnte.
+     */
+    public boolean setTalerDB(User eingeloggterUser) {
         ContentValues iniVaulues = new ContentValues();
         iniVaulues.put(TALER, eingeloggterUser.getTaler());
-        return database.update(TABLE_USER,iniVaulues, KEY_USER_ID + " = " + eingeloggterUser.getUserID(), null) > 0;
-
+        return database.update(TABLE_USER, iniVaulues, KEY_USER_ID + " = "
+                + eingeloggterUser.getUserID(), null) > 0;
     }
 
-
+    /*
+    Hier wird eine neue Klasse eingeführt -DatabaseHelper- die bei der Erzeugung der
+    Datenbank und deren Tabellen in der onCreate()-Methode angewendet wird.
+     */
 
     public class DatabaseHelper extends SQLiteOpenHelper {
-
 
         DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -267,18 +289,18 @@ public class MegaBetDBAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase database) {
-
             database.execSQL(SQL_CREATE_USER);
             database.execSQL(SQL_CREATE_SPIEL);
             database.execSQL(SQL_CREATE_WETTE);
-
-
         }
 
+        /*
+        Kann bei einen Versionswechsel zur Anwendung kommen.
+         */
 
         @Override
         public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-            // Not used, but you could upgrade the database with ALTER scripts
+            // wird zur Zeit noch nicht genutzt.
         }
     }
 }

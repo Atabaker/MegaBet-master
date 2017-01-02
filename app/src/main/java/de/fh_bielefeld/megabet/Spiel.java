@@ -32,7 +32,7 @@ public class Spiel {
         return spielID;
     }
 
-    public void setSpielID(){
+    public void setSpielID(long spielID){
         this.spielID = spielID;
     }
 
@@ -94,7 +94,7 @@ public class Spiel {
 
 
     public String toString() {
-        return datum +  " " + heim + " - " + gast;
+        return datum +  " " + uhrzeit + " " + heim + " - " + gast;
 
     }
 

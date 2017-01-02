@@ -23,7 +23,6 @@ import java.util.Collections;
 
 public class UserActivity extends AppCompatActivity {
 
-
     final Context context = this;
 
     ArrayAdapter<Spiel> adapterS;
@@ -62,19 +61,17 @@ public class UserActivity extends AppCompatActivity {
 
         eingeloggterUser = LoginActivity.getEingeloggterUser();
 
-
         loadData();
-
         loadSpiel();
-
         fillDataSpiel();
-
         fillDataWette();
-
         createTableViewSpiel();
-
         createTableViewWette();
     }
+
+    /*
+    In der loadData()-Methode werden die Textviews per findViewbyID ausgelesen und Variabeln zugewiesen
+     */
 
     private void loadData(){
         textViewUser = (TextView) findViewById(R.id.user_textViewUsername);
@@ -166,8 +163,6 @@ public class UserActivity extends AppCompatActivity {
                 return true;
          //  }
 
-
-
         }
         return false;
     }
@@ -180,22 +175,18 @@ public class UserActivity extends AppCompatActivity {
         wettListe.setAdapter(adapterW);
     }
 
-
     public void createTableViewSpiel(){
 
         final ListView spielListe = (ListView) findViewById(R.id.user_ListViewWettereignisse);
         adapterS = new ArrayAdapter<Spiel>(this, android.R.layout.simple_expandable_list_item_1, spiel);
         spielListe.setAdapter(adapterS);
 
-
         spielListe.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 
                 Intent intent = new Intent(context, WetteAbgebenActivity.class);
-
 
                 Bundle bundle = new Bundle();
                 bundle.putLong(KEY_SPIEL_ID, spiel.get(position).getSpielID());
@@ -204,15 +195,9 @@ public class UserActivity extends AppCompatActivity {
                 bundle.putString(DATUM, spiel.get(position).getDatum());
                 bundle.putString(UHRZEIT, spiel.get(position).getUhrzeit());
 
-
                 intent.putExtras(bundle);
 
                 startActivityForResult(intent, 0);
-
-
-
-
-
             }
         });
     }
