@@ -151,7 +151,7 @@ public class WetteAbgebenActivity extends AppCompatActivity {
     und der Spieler verbleibt in der WetteAbgebenActicity.
      */
 
-    public void onClickWetteAbgeben(View view){
+    public void onClickWetteAbgeben(View view) {
 
         Intent intent = getIntent();
         Bundle spielbundle = intent.getExtras();
@@ -160,18 +160,19 @@ public class WetteAbgebenActivity extends AppCompatActivity {
         String username = eingeloggterUser.getUsername();
         int tipp = loadWettausgang();
         double wettEinsatz = loadWettEinsatz();
+        if (wettEinsatz == 0.0) {
+            Toast.makeText(getApplicationContext(), "Wette konnte nicht gesetzt werden, da kein Betrag angegeben wurde!", Toast.LENGTH_LONG).show();
+        } else {
+            Wette wette = new Wette(spielID, username, tipp, wettEinsatz);
+            UserActivity activity = new UserActivity();
 
-        Wette wette = new Wette(spielID, username, tipp, wettEinsatz);
-        UserActivity activity = new UserActivity();
-
-        if(activity.setUser_taler(wettEinsatz) == true) {
-            dbHelper.createWette(wette);
-            Intent intenti = new Intent(this, UserActivity.class);
-            startActivity(intenti);
-        }
-        else{
-            Toast.makeText(getApplicationContext(), "Wette konnte nicht gesetzt werden, da Talerbestand zu niedrig!", Toast.LENGTH_LONG).show();
+            if (activity.setUser_taler(wettEinsatz) == true) {
+                dbHelper.createWette(wette);
+                Intent intenti = new Intent(this, UserActivity.class);
+                startActivity(intenti);
+            } else {
+                Toast.makeText(getApplicationContext(), "Wette konnte nicht gesetzt werden, da Talerbestand zu niedrig!", Toast.LENGTH_LONG).show();
+            }
         }
     }
-
 }
