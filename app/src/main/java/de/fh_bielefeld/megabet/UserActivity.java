@@ -142,7 +142,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
         /* In der loadSpiel()-Methode werden 4 Spiel-Testobjekte erzeugt.
-        Daraufhin wird überprüft, ob die Spiel_Testobjekte schon in der Datenbank angelegt
+        Daraufhin wird überprüft, ob die Spiel-Testobjekte schon in der Datenbank angelegt
         worden sind (Cursor cursor = dbHelper.fetchAllSpiele();), bestehen keine Datensätze
         in der TABLE_SPIELE werden die Testobjekte mit Hilfe der createSpiel()-Methode
         in die Datenbank geschrieben.
@@ -196,11 +196,11 @@ public class UserActivity extends AppCompatActivity {
 
 
     /*
-    Den beiden ListViews (wettListe, spielListe) wird ein ArrayAdapter gesettet, damit dieser
+    Den beiden ListViews (wettListe, spielListe) wird ein ArrayAdapter erzeugt, damit dieser
     die ArrayListen anzeigen kann. Des Weiteren wird den ListViews ein "onItemClickListener"
-    gesetzt. Bei Auswahl eines Eintrages wird ein Bundle erzeugt welches die Spielinformation
-    des ausgewählten Eintrages speichert und dem Intent übergibt.
-    Anschließend wird die WetteAbgebenActivity aufgerufen.
+    zugewiesen. Bei Auswahl eines Eintrages wird ein Bundle erzeugt welches die Spielinformation
+    des ausgewählten Eintrag speichert und dem Intent übergibt.
+    Anschließend wird die "WetteAbgebenActivity" aufgerufen.
      */
 
     public void createTableViewWette() {
