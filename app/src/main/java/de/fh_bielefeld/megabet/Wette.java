@@ -112,6 +112,10 @@ public class Wette {
 
     }
 
+    /*
+    In der toString()-Methode wird eine Überprüfung der abgegebenen Tipp getätigt.
+    Bei einem getippten Heimsieg/Gastsieg/Unentschieden wird dieser dem String hinten angehängt.
+     */
 
     public String toString() {
 

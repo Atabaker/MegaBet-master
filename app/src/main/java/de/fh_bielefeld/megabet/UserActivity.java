@@ -70,7 +70,9 @@ public class UserActivity extends AppCompatActivity {
     }
 
     /*
-    In der loadData()-Methode werden die Textviews per findViewbyID ausgelesen und Variabeln zugewiesen
+    In der loadData()-Methode werden die TextViews per findViewbyId ausgelesen und Variabeln
+    zugewiesen. Diesen wird anschließend mit den entsprechenden Methoden,
+    der eingeloggte Username und dem zugehörigen Talerbestand übergeben.
      */
 
     private void loadData(){
@@ -84,6 +86,15 @@ public class UserActivity extends AppCompatActivity {
         textViewTaler.setText(user_taler);
         //set text
     }
+
+    /*
+    In der Methode fillDataWette() und fillDataSpiel() wird mit Hilfe des dbHelper und der
+    fetchAllWette()-Methode bzw der fetchAllSpiel-Methode alle
+    Wetten/Spiele aus der TABLE_WETTE/TABLE_SPIEL ausgelesen und dem Cursor übergeben.
+    Mit der while-Schleife wird von jedem Cursor-Objekt die jeweiligen Attribute ausgelesen und den
+    entsprechenden Variabeln zugewiesen. Anschließend werden Wett und Spiel-Objekte erzeugt
+    und diese in die entsprechende ArrayList abgelegt
+    */
 
     public void fillDataWette(){
 
@@ -130,6 +141,12 @@ public class UserActivity extends AppCompatActivity {
         dbHelper.close();
     }
 
+        /* In der loadSpiel()-Methode werden 4 Spiel-Testobjekte erzeugt.
+        Daraufhin wird überprüft, ob die Spiel_Testobjekte schon in der Datenbank angelegt
+        worden sind (Cursor cursor = dbHelper.fetchAllSpiele();), bestehen keine Datensätze
+        in der TABLE_SPIELE werden die Testobjekte mit Hilfe der createSpiel()-Methode
+        in die Datenbank geschrieben.
+        */
 
     public void loadSpiel(){
 
@@ -151,22 +168,40 @@ public class UserActivity extends AppCompatActivity {
 
     }
 
+        /*
+        Die setUser_taler bekommt den gewetteten Talerbetrag als Parameter übergeben.
+        Daraufhin wird überprüft ob dieser Betrag den aktuellen Talerbestand des eingeloggten
+        Users überschreitet. Ist dies nicht der Fall wird der gewettete Betrag dem Talerstand
+        abgezogen und die Methode setTalerDB() aufgerufen, welche den Datenbankeintrag des
+        jeweiligen Users updated. (Hier ausgeklammert, da noch nicht funktionsfähig)
+        Bei erfolgreicher Aktualisierung gibt die Methode ein "true" zurück, andernfalls ein "false"
+         */
 
     public boolean setUser_taler(double user_taler){
-
 
         eingeloggterUser = LoginActivity.getEingeloggterUser();
         if(user_taler<=eingeloggterUser.getTaler()) {
             eingeloggterUser.setTaler(user_taler);
 
-          // if(dbHelper.setTalerDB(eingeloggterUser) == true) {
+            long userid = eingeloggterUser.getUserID();
+            double aktuelltaler = eingeloggterUser.getTaler();
+
+          // if(dbHelper.setTalerDB(userid,aktuelltaler) == true) {
                 return true;
-         //  }
+          // }
 
         }
         return false;
     }
 
+
+    /*
+    Den beiden ListViews (wettListe, spielListe) wird ein ArrayAdapter gesettet, damit dieser
+    die ArrayListen anzeigen kann. Des Weiteren wird den ListViews ein "onItemClickListener"
+    gesetzt. Bei Auswahl eines Eintrages wird ein Bundle erzeugt welches die Spielinformation
+    des ausgewählten Eintrages speichert und dem Intent übergibt.
+    Anschließend wird die WetteAbgebenActivity aufgerufen.
+     */
 
     public void createTableViewWette() {
 
