@@ -38,17 +38,9 @@ public class WetteAbgebenActivity extends AppCompatActivity {
     boolean heimGewinnt;
     boolean gastGewinnt;
     boolean unentschieden;
-    private Handler handler;
     int tipp;
-    public static final String HEIM = "heim";
-    public static final String GAST = "gast";
-    public static final String DATUM = "datum";
-    public static final String EINSATZ = "einsatz";
-
 
     private MegaBetDBAdapter dbHelper;
-
-
 
 
     @Override
@@ -64,6 +56,12 @@ public class WetteAbgebenActivity extends AppCompatActivity {
 
 
     }
+
+    /*
+    Die loadWettEinsatz()-Methode dient dazu, das vorliegende Numberfield auszulesn und den
+    Wert in ein Double umzuwandeln. Dieser wird anschließend zurückgegeben.
+    Bei unerwarteten NumberFormatExceptions, wird der Wert 0.0 zurückgegeben.
+     */
 
     private double loadWettEinsatz() throws NumberFormatException{
 
@@ -82,6 +80,14 @@ public class WetteAbgebenActivity extends AppCompatActivity {
             return 0.0;
         }
     }
+
+    /*
+    Die loadWettausgang()-Methode dient dazu, das vom Benutzer jeweilige getippte Ergebnis
+    auszuwerten und zurück zu geben. Zunächst werden die RadioButtons
+    per findViewById initialisiert.
+    Dann wird mit Hilfe von If-Abfragen überprüft welcher der Button ausgewählt wurde und
+    entweder 1,2 oder 3 zurückgegeben.
+     */
 
     private int loadWettausgang() {
 
@@ -110,6 +116,11 @@ public class WetteAbgebenActivity extends AppCompatActivity {
         return tipp = 0;
     }
 
+    /*
+    In der loadData()-Methode werden zunächst alle TextViews Variabeln zugewiesen.
+    Danach wird  das aus der UserActivity übergebene Bundle ausgelesen
+    und damit die jeweiligen textViews versorgt.
+     */
 
     private void loadData() {
         textViewUser = (TextView) findViewById(R.id.wette_textViewUsername);
@@ -127,8 +138,6 @@ public class WetteAbgebenActivity extends AppCompatActivity {
         String heim = spielbundle.getString(UserActivity.HEIM);
         String gast = spielbundle.getString(UserActivity.GAST);
 
-        // findview for all views
-
         textViewDatum.setText(datum);
         textViewUhrzeit.setText(uhrzeit);
         textViewHeim.setText(heim);
@@ -137,17 +146,32 @@ public class WetteAbgebenActivity extends AppCompatActivity {
 
         textViewUser.setText(LoginActivity.getEingeloggterUser().getUsername());
         textViewTaler.setText(user_taler);
-        //set text
     }
 
+    /*
+     Bei Klick auf den "Abbrechen"-Button gelangt der Benutzer in die UserActivity zurück
+     */
 
     public void onClickWetteCancel(View view) {
 
-        // Do something in response to button
         Intent intent = new Intent(this, UserActivity.class);
         startActivity(intent);
 
     }
+
+    /*
+    Die onClickWetteAbgeben()-Methode dient dazu, die vom Benutzer abgegebene Wette auszuwerten
+    und bei erfogreicher Überprüfung des Talerbestandes und gesetzten Talers, ein neues Wett-
+    Objekt zu erzeugen und diese mit Hilfe der createWette()-Methode in die Datenbank zu schreiben.
+    Die benötigten Parameter zur Erzeugung des Wett-Objektes werden sowohl vom Bundle als auch
+    von den Methoden: loadWettausgang(), loadWettEinsatz() entnommen.
+    Daraufhin findet eine Überprüfung des gesetzten Talerbetrages und des Talerbestandes
+    statt mit Hilfe der setUser_taler()- Methode aus der UserActivity.
+    Bei erfolgreicher Überprüfung wird das Wettobjekt in die Datenbank geschrieben.
+    Andernfalls wird ein Toast aufgerufen mit folgender Fehlermeldung:
+    "Wette konnte nicht gesetzt werden, da Talerbestand zu niedrig!".
+    Anschließend wird die UserActivity aufgerufen.
+     */
 
     public void onClickWetteAbgeben(View view){
 
@@ -168,16 +192,17 @@ public class WetteAbgebenActivity extends AppCompatActivity {
 
             dbHelper.createWette(wette);
 
+            Intent intenti = new Intent(this, UserActivity.class);
+
+            startActivity(intenti);
+
         }
         else{
             Toast.makeText(getApplicationContext(), "Wette konnte nicht gesetzt werden, da Talerbestand zu niedrig!", Toast.LENGTH_LONG).show();
         }
 
 
-        Intent intenti = new Intent(this, UserActivity.class);
 
-
-        startActivity(intenti);
 
 
 
